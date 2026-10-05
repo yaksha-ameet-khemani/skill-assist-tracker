@@ -230,7 +230,8 @@ export function Tracker() {
   const cols = useColumnWidths('tracker')
   const [error, setError] = useState('')
   const [open, setOpen] = useState<ContentRow | null>(null)
-  const [editing, setEditing] = useState<ContentRow | null>(null)
+  // The item open in the edit popup, or 'new' for "+ Add content".
+  const [editing, setEditing] = useState<ContentRow | 'new' | null>(null)
 
   // Filters live in the URL so a filtered view survives a refresh and can be shared.
   const [params, setParams] = useSearchParams()
@@ -352,9 +353,14 @@ export function Tracker() {
 
   return (
     <div className="page stack">
-      <header>
-        <h1>Content tracker</h1>
-        <p className="muted">Each piece of content we created and the TOC topics it is based on.</p>
+      <header className="tracker-head">
+        <div>
+          <h1>Content tracker</h1>
+          <p className="muted">Each piece of content we created and the TOC topics it is based on.</p>
+        </div>
+        <button className="primary" onClick={() => setEditing('new')} title="Add a new content item">
+          + Add content
+        </button>
       </header>
 
       <Message kind="error">{error}</Message>
@@ -514,20 +520,21 @@ export function Tracker() {
       {open && <TopicsPanel content={open} onClose={() => setOpen(null)} />}
       {editing && (
         <EditContent
-          content={editing}
-          usedExtras={
+          content={editing === 'new' ? undefined : editing}
+          defaults={{ client: f.client, track: f.track }}
+          usedExtrasFor={(client) =>
             new Set(
               (rows ?? [])
-                .filter((x) => x.client_name === editing.client_name)
-                .flatMap((x) => ['course', 'proficiency', 'assessment', 'project', 'week', 'participant'].filter((k) => x.extra?.[k])),
+                .filter((x) => x.client_name === client)
+                .flatMap((x) => ['course', 'proficiency', 'assessment', 'project', 'participant'].filter((k) => x.extra?.[k])),
             )
           }
           onClose={() => setEditing(null)}
-          onSaved={async (id) => {
-            // Re-read the saved row (track, CSM and topics come from the view).
+          onSaved={async (id, keepOpen) => {
+            // Re-read the saved row (track, CSM and topics come from the view); a new item is added to the list.
             const fresh = must(await supabase.from('v_contents').select('*').eq('id', id).single()) as ContentRow
-            setRows((all) => all && sortRows(all.map((x) => (x.id === id ? fresh : x))))
-            setEditing(null)
+            setRows((all) => all && sortRows(all.some((x) => x.id === id) ? all.map((x) => (x.id === id ? fresh : x)) : [...all, fresh]))
+            if (!keepOpen) setEditing(null)
           }}
           onDeleted={(id) => {
             setRows((all) => all && all.filter((x) => x.id !== id))

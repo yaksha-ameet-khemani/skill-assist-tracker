@@ -1,22 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ComboInput } from './common'
-import { fetchAll, findOrCreateTrack, must, supabase, type ContentRow, type ContentType } from '../lib/supabase'
+import { fetchAll, findOrCreateClient, findOrCreateTrack, must, supabase, type ContentRow, type ContentType } from '../lib/supabase'
 
-/** Optional per-item fields shown as extra home-page columns (stored in contents.extra). */
+/** Optional per-item fields shown as extra home-page columns (stored in contents.extra). Week has its own checkbox. */
 const EXTRA_FIELDS: [key: string, label: string, hint: string][] = [
   ['course', 'Course', 'e.g. the course or skill the item belongs to'],
   ['proficiency', 'Proficiency', 'e.g. L3'],
   ['assessment', 'Assessment', 'Actual / Re-attempt / Final – Actual / Final – Re-attempt'],
   ['project', 'Project', 'e.g. Incremental Project 1'],
-  ['week', 'Week', 'e.g. Week 2'],
   ['participant', 'Participant', 'person the assessment was made for'],
 ]
 
+type ClientRow = { id: number; name: string }
 type TrackRow = { id: number; name: string; csm: string | null }
 type TopicOption = { id: number; topic: string | null; day_label: string | null; sheet_name: string; file_name: string; module: string; text: string }
 type Links = { doc?: string; doc_kind?: string; solution?: string; manual?: boolean; [k: string]: unknown }
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '')
+const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase()
 
 function linkKind(url: string): string {
   if (url.includes('/drive/folders/')) return 'folder'
@@ -26,42 +27,56 @@ function linkKind(url: string): string {
 }
 
 /**
- * Popup to edit every field of one content item: track (new names create a track), the track's CSM, type, day, name,
- * date, Doc / Solution links, the optional extra columns, notes and the linked topics (pick from the client's TOCs or
- * type a new topic, which goes into the client's hand-written topic list). Client stays fixed: topics belong to it.
+ * Popup to add a new content item (no `content`) or edit one: client (add only; a new name creates the client), track
+ * (a new name creates the track), the track's CSM, type, day, name, date, Doc / Solution links, Week (only when "Has
+ * week" is ticked), the optional extra columns, notes and the linked topics (pick from the client's TOCs or type a new
+ * topic, which goes into the client's hand-written topic list). When editing, the client is fixed: topics belong to it.
  */
 export function EditContent({
   content,
-  usedExtras,
+  defaults,
+  usedExtrasFor,
   onClose,
   onSaved,
   onDeleted,
 }: {
-  content: ContentRow
-  /** Extra fields this client already uses; others are behind "Show all fields". */
-  usedExtras: Set<string>
+  /** The item to edit; leave out to add a new one. */
+  content?: ContentRow
+  /** Pre-filled values when adding (the client / track the home page is filtered on). */
+  defaults?: { client?: string; track?: string }
+  /** Extra fields a client already uses; others are behind "Show all fields". */
+  usedExtrasFor: (client: string) => Set<string>
   onClose: () => void
-  onSaved: (id: number) => void
+  /** Called after a save; `keepOpen` = "Save & add another" (the popup stays open for the next item). */
+  onSaved: (id: number, keepOpen?: boolean) => void
   onDeleted: (id: number) => void
 }) {
-  const x = content.extra ?? {}
+  const isNew = !content
+  const x = content?.extra ?? {}
   const links0 = (x.links && typeof x.links === 'object' ? x.links : {}) as Links
+  const [clients, setClients] = useState<ClientRow[]>([])
   const [tracks, setTracks] = useState<TrackRow[]>([])
   const [types, setTypes] = useState<ContentType[]>([])
   const [options, setOptions] = useState<TopicOption[]>([])
-  const [form, setForm] = useState({
-    track: content.track_name ?? '',
-    csm: content.csm ?? '',
-    type: content.content_type,
-    day: content.sequence_label ?? '',
-    name: content.name,
-    date: content.delivery_date ?? '',
-    notes: content.notes ?? '',
-    doc: links0.doc ?? '',
-    solution: links0.solution ?? '',
-    ...Object.fromEntries(EXTRA_FIELDS.map(([k]) => [k, str(x[k])])),
-  } as Record<string, string>)
-  const [linked, setLinked] = useState<number[]>(content.topics.map((t) => t.toc_row_id))
+  const blank = (keep: Record<string, string> = {}) =>
+    ({
+      client: content?.client_name ?? defaults?.client ?? '',
+      track: content?.track_name ?? defaults?.track ?? '',
+      csm: content?.csm ?? '',
+      type: content?.content_type ?? '',
+      day: content?.sequence_label ?? '',
+      name: content?.name ?? '',
+      date: content?.delivery_date ?? '',
+      notes: content?.notes ?? '',
+      doc: links0.doc ?? '',
+      solution: links0.solution ?? '',
+      week: str(x.week),
+      ...Object.fromEntries(EXTRA_FIELDS.map(([k]) => [k, str(x[k])])),
+      ...keep,
+    }) as Record<string, string>
+  const [form, setForm] = useState(blank)
+  const [hasWeek, setHasWeek] = useState(!!str(x.week))
+  const [linked, setLinked] = useState<number[]>(content?.topics.map((t) => t.toc_row_id) ?? [])
   const [find, setFind] = useState('')
   const [newTopic, setNewTopic] = useState('')
   // Typed topics wait here until Save (so Cancel leaves nothing behind).
@@ -69,22 +84,44 @@ export function EditContent({
   const [allFields, setAllFields] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }))
 
+  // Client: fixed when editing; when adding, an existing client by name (or none yet = a new client).
+  const chosenClient: ClientRow | undefined = content
+    ? { id: content.client_id, name: content.client_name }
+    : clients.find((c) => same(c.name, form.client))
+  const clientId = chosenClient?.id
+
   useEffect(() => {
+    Promise.all([
+      supabase.from('content_types').select('name,sort_order').order('sort_order'),
+      supabase.from('clients').select('id,name').order('name'),
+    ])
+      .then(([ty, cl]) => {
+        const t: ContentType[] = must(ty)
+        setTypes(t)
+        setClients(must(cl))
+        setForm((f) => (f.type ? f : { ...f, type: t.find((v) => v.name === 'Daily Assignment')?.name ?? t[0]?.name ?? '' }))
+      })
+      .catch((e) => setError(e.message))
+  }, [])
+
+  // Tracks and topics of the chosen client.
+  useEffect(() => {
+    if (!clientId) {
+      setTracks([])
+      setOptions([])
+      return
+    }
     ;(async () => {
-      const [t, ty] = await Promise.all([
-        supabase.from('tracks').select('id,name,csm').eq('client_id', content.client_id).order('name'),
-        supabase.from('content_types').select('name,sort_order').order('sort_order'),
-      ])
-      setTracks(must(t))
-      setTypes(must(ty))
+      setTracks(must(await supabase.from('tracks').select('id,name,csm').eq('client_id', clientId).order('name')))
       const rows = await fetchAll<Omit<TopicOption, 'module' | 'text'> & { data: Record<string, unknown>; data_text: string | null }>(() =>
         supabase
           .from('v_toc_rows')
           .select('id,topic,day_label,sheet_name,file_name,data,data_text')
-          .eq('client_id', content.client_id)
+          .eq('client_id', clientId)
           .order('toc_file_id')
           .order('row_number'),
       )
@@ -92,13 +129,18 @@ export function EditContent({
         rows.map((r) => ({ ...r, module: str(r.data?.Module ?? r.data?.['Module Title'] ?? r.data?.Skill), text: (r.data_text ?? '').toLowerCase() })),
       )
     })().catch((e) => setError(e.message))
-  }, [content.client_id])
+  }, [clientId])
+
+  // Switching client when adding: topics belong to a client, so picked ones are dropped.
+  useEffect(() => {
+    if (isNew) setLinked([])
+  }, [clientId, isNew])
 
   // The CSM box follows the chosen track until it is edited.
   const [csmTouched, setCsmTouched] = useState(false)
-  const chosenTrack = tracks.find((t) => t.name.toLowerCase() === form.track.trim().toLowerCase())
+  const chosenTrack = tracks.find((t) => same(t.name, form.track))
   useEffect(() => {
-    if (!csmTouched && chosenTrack) set('csm', chosenTrack.csm ?? '')
+    if (!csmTouched) set('csm', chosenTrack?.csm ?? (isNew ? '' : form.csm))
   }, [chosenTrack?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const byId = useMemo(() => new Map(options.map((o) => [o.id, o])), [options])
@@ -111,18 +153,22 @@ export function EditContent({
       .slice(0, 12)
   }, [find, options, linked])
 
+  const usedExtras = usedExtrasFor(chosenClient?.name ?? form.client)
   const extrasShown = EXTRA_FIELDS.filter(([k]) => allFields || usedExtras.has(k) || form[k])
-  const valid = form.name.trim() && form.type && form.track.trim()
+  const valid = form.client.trim() && form.name.trim() && form.type && form.track.trim() && (!hasWeek || form.week.trim())
 
-  const save = async () => {
+  /** Saves; returns the item id, or null when it failed (the error is shown). */
+  const save = async (): Promise<number | null> => {
     const doc = form.doc.trim()
     const sol = form.solution.trim()
-    for (const u of [doc, sol]) if (u && !/^https?:\/\//i.test(u)) return setError('Links must start with https://')
+    for (const u of [doc, sol]) if (u && !/^https?:\/\//i.test(u)) return (setError('Links must start with https://'), null)
     setBusy(true)
     setError('')
+    setNotice('')
     try {
+      const client = chosenClient ?? (await findOrCreateClient(form.client))
       // Track: an existing one by name, or a new one; the CSM is stored on the track (applies to all its items).
-      const track = chosenTrack ?? (await findOrCreateTrack(content.client_id, form.track))
+      const track = chosenTrack ?? (await findOrCreateTrack(client.id, form.track))
       const csm = form.csm.trim() || null
       if ((chosenTrack?.csm ?? null) !== csm || !chosenTrack)
         must(await supabase.from('tracks').update({ csm }).eq('id', track.id).select('id'))
@@ -132,7 +178,9 @@ export function EditContent({
         if (form[k].trim()) extra[k] = form[k].trim()
         else delete extra[k]
       }
-      // Links: a changed Doc / Solution link is marked manual so the sheet sync keeps it.
+      if (hasWeek && form.week.trim()) extra.week = form.week.trim()
+      else delete extra.week
+      // Links: a new / changed Doc or Solution link is marked manual so the sheet sync keeps it.
       const links: Links = { ...links0 }
       const changed = doc !== (links0.doc ?? '') || sol !== (links0.solution ?? '')
       if (doc) Object.assign(links, { doc, doc_kind: linkKind(doc) })
@@ -145,46 +193,58 @@ export function EditContent({
       if (changed) Object.assign(links, { manual: true, source: { manual: true, date: new Date().toISOString().slice(0, 10) } })
       if (links.doc || links.solution) extra.links = links
       else delete extra.links
+      if (isNew) extra.source = { portal: true, date: new Date().toISOString().slice(0, 10) }
 
-      must(
-        await supabase
-          .from('contents')
-          .update({
-            track_id: track.id,
-            content_type: form.type,
-            sequence_label: form.day.trim() || null,
-            name: form.name.trim(),
-            delivery_date: form.date || null,
-            notes: form.notes.trim() || null,
-            extra,
-          })
-          .eq('id', content.id)
-          .select('id'),
-      )
+      const fields = {
+        track_id: track.id,
+        content_type: form.type,
+        sequence_label: form.day.trim() || null,
+        name: form.name.trim(),
+        delivery_date: form.date || null,
+        notes: form.notes.trim() || null,
+        extra,
+      }
+      const id: number = content
+        ? (must(await supabase.from('contents').update(fields).eq('id', content.id).select('id')), content.id)
+        : must(await supabase.from('contents').insert({ ...fields, client_id: client.id }).select('id').single()).id
 
       // Topics: add / remove links as ticked.
-      const before = new Set(content.topics.map((t) => t.toc_row_id))
-      const add = [...linked.filter((id) => !before.has(id)), ...(await createPending())]
-      const remove = [...before].filter((id) => !linked.includes(id))
+      const before = new Set(content?.topics.map((t) => t.toc_row_id) ?? [])
+      const add = [...linked.filter((t) => !before.has(t)), ...(await createPending(client))]
+      const remove = [...before].filter((t) => !linked.includes(t))
       if (add.length)
-        must(await supabase.from('content_toc_links').insert(add.map((toc_row_id) => ({ content_id: content.id, toc_row_id }))).select('content_id'))
-      if (remove.length)
-        must(await supabase.from('content_toc_links').delete().eq('content_id', content.id).in('toc_row_id', remove).select('content_id'))
-      onSaved(content.id)
+        must(await supabase.from('content_toc_links').insert(add.map((toc_row_id) => ({ content_id: id, toc_row_id }))).select('content_id'))
+      if (remove.length) must(await supabase.from('content_toc_links').delete().eq('content_id', id).in('toc_row_id', remove).select('content_id'))
+      if (!chosenClient) setClients((c) => [...c, client])
+      return id
     } catch (e) {
       const m = (e as Error).message
       setError(m.includes('contents_identity') ? 'Another item in this track already has this type, day and name.' : m)
+      return null
     } finally {
       setBusy(false)
     }
   }
 
+  /** "Save & add another": keeps client, track, CSM, type, date and Week; clears the rest. */
+  const saveAndNext = async () => {
+    const id = await save()
+    if (id == null) return
+    onSaved(id, true)
+    const keep = { client: form.client, track: form.track, csm: form.csm, type: form.type, date: form.date, week: form.week }
+    setForm(blank(keep))
+    setLinked([])
+    setPending([])
+    setFind('')
+    setNotice(`Saved “${form.name.trim()}”. Add the next one.`)
+  }
+
   /** Typed topics go into the client's hand-written topic list ("(Added manually)", created if missing) on Save. */
-  const createPending = async (): Promise<number[]> => {
+  const createPending = async (client: ClientRow): Promise<number[]> => {
     if (!pending.length) return []
     type F = { id: number; sheet_name: string }
     const files: F[] = must(
-      await supabase.from('toc_files').select('id,sheet_name').eq('client_id', content.client_id).eq('file_name', '(Added manually)').order('id'),
+      await supabase.from('toc_files').select('id,sheet_name').eq('client_id', client.id).eq('file_name', '(Added manually)').order('id'),
     )
     const file: F =
       files[0] ??
@@ -192,9 +252,9 @@ export function EditContent({
         await supabase
           .from('toc_files')
           .insert({
-            client_id: content.client_id,
+            client_id: client.id,
             file_name: '(Added manually)',
-            sheet_name: `${content.client_name} topics`,
+            sheet_name: `${client.name} topics`,
             header_row: 1,
             columns: [{ letter: 'A', header: 'Topic' }],
             topic_column: 'A',
@@ -223,6 +283,7 @@ export function EditContent({
   }
 
   const remove = async () => {
+    if (!content) return
     setBusy(true)
     try {
       must(await supabase.from('contents').delete().eq('id', content.id).select('id'))
@@ -237,7 +298,7 @@ export function EditContent({
     <div className="overlay" onClick={onClose}>
       <div className="panel card stack edit-panel" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <header className="form-row" style={{ justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0 }}>Edit content</h2>
+          <h2 style={{ margin: 0 }}>{isNew ? 'Add content' : 'Edit content'}</h2>
           <button className="small" onClick={onClose}>
             Close
           </button>
@@ -246,7 +307,14 @@ export function EditContent({
         <div className="form-grid">
           <label>
             Client
-            <input value={content.client_name} disabled title="The client cannot be changed here (topics belong to it)" />
+            {isNew ? (
+              <>
+                <ComboInput value={form.client} onChange={(v) => set('client', v)} options={clients.map((c) => c.name)} />
+                {form.client.trim() && !chosenClient && clients.length > 0 && <span className="small hint">New client will be created</span>}
+              </>
+            ) : (
+              <input value={form.client} disabled title="The client cannot be changed here (topics belong to it)" />
+            )}
           </label>
           <label>
             Track
@@ -292,6 +360,19 @@ export function EditContent({
             Solution link
             <input type="url" value={form.solution} onChange={(e) => set('solution', e.target.value)} />
           </label>
+          <div className="week-field">
+            <label className="check">
+              <input type="checkbox" checked={hasWeek} onChange={(e) => setHasWeek(e.target.checked)} /> Has week
+            </label>
+            <input
+              aria-label="Week"
+              value={form.week}
+              disabled={!hasWeek}
+              placeholder={hasWeek ? 'e.g. Week 2' : 'Tick “Has week” to fill'}
+              title={hasWeek ? undefined : 'Tick “Has week” if this item belongs to a week'}
+              onChange={(e) => set('week', e.target.value)}
+            />
+          </div>
           {extrasShown.map(([k, l, hint]) => (
             <label key={k}>
               {l}
@@ -305,7 +386,7 @@ export function EditContent({
         </div>
         {extrasShown.length < EXTRA_FIELDS.length && (
           <button className="small link-like" onClick={() => setAllFields(true)}>
-            Show all fields (Course, Proficiency, Assessment, Project, Week, Participant)
+            Show all fields (Course, Proficiency, Assessment, Project, Participant)
           </button>
         )}
 
@@ -323,7 +404,7 @@ export function EditContent({
               ))}
               {linked.map((id) => {
                 const o = byId.get(id)
-                const t = content.topics.find((tt) => tt.toc_row_id === id)
+                const t = content?.topics.find((tt) => tt.toc_row_id === id)
                 return (
                   <span className="chip" key={id} title={o ? `${o.file_name} / ${o.sheet_name}` : undefined}>
                     {o ? label(o) : t?.topic ?? `#${id}`}{' '}
@@ -335,7 +416,13 @@ export function EditContent({
               })}
             </div>
           )}
-          <input type="search" placeholder="Find a topic of this client to add…" value={find} onChange={(e) => setFind(e.target.value)} />
+          <input
+            type="search"
+            placeholder={clientId ? 'Find a topic of this client to add…' : 'Pick an existing client to search its topics…'}
+            disabled={!clientId}
+            value={find}
+            onChange={(e) => setFind(e.target.value)}
+          />
           {matches.length > 0 && (
             <ul className="topic-matches">
               {matches.map((o) => (
@@ -369,31 +456,45 @@ export function EditContent({
           </div>
         </section>
 
+        {notice && <p className="ok-text">{notice}</p>}
         {error && <p className="error-text">{error}</p>}
         <div className="form-row" style={{ justifyContent: 'space-between' }}>
           <div className="form-row">
-            <button className="primary" disabled={busy || !valid} onClick={save}>
+            <button
+              className="primary"
+              disabled={busy || !valid}
+              onClick={async () => {
+                const id = await save()
+                if (id != null) onSaved(id)
+              }}
+            >
               {busy ? 'Saving…' : 'Save'}
             </button>
+            {isNew && (
+              <button disabled={busy || !valid} onClick={saveAndNext} title="Save, then start the next item with the same client, track, type and date">
+                Save & add another
+              </button>
+            )}
             <button disabled={busy} onClick={onClose}>
               Cancel
             </button>
           </div>
-          {confirmDelete ? (
-            <div className="form-row">
-              <span className="small">Delete this item for good?</span>
-              <button className="danger" disabled={busy} onClick={remove}>
-                Yes, delete
+          {!isNew &&
+            (confirmDelete ? (
+              <div className="form-row">
+                <span className="small">Delete this item for good?</span>
+                <button className="danger" disabled={busy} onClick={remove}>
+                  Yes, delete
+                </button>
+                <button className="small" onClick={() => setConfirmDelete(false)}>
+                  No
+                </button>
+              </div>
+            ) : (
+              <button className="danger" disabled={busy} onClick={() => setConfirmDelete(true)}>
+                Delete
               </button>
-              <button className="small" onClick={() => setConfirmDelete(false)}>
-                No
-              </button>
-            </div>
-          ) : (
-            <button className="danger" disabled={busy} onClick={() => setConfirmDelete(true)}>
-              Delete
-            </button>
-          )}
+            ))}
         </div>
       </div>
     </div>

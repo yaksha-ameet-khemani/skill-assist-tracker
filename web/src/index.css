@@ -700,3 +700,26 @@ button.link-like {
   z-index: 30;
   padding: 12px;
 }
+
+/* ---- "+ Add content" (home page) and the Week field in the popup ---- */
+.tracker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.week-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.week-field input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.ok-text {
+  color: var(--accent);
+}
