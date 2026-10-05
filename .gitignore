@@ -1,0 +1,25 @@
+# Dependencies and build output
+node_modules/
+dist/
+.wrangler/
+
+# Secrets — never commit
+cloudflare/TEAM_PASSCODE.txt
+cloudflare/.dev.vars
+.env
+.env.*
+*.local
+
+# Data (content, not code): exports and database backups are kept as files, outside version history
+backups/
+cloudflare/data.sql
+links.sql
+
+# Logs / local tooling
+*.log
+supabase/.temp/
+supabase/.branches/
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/

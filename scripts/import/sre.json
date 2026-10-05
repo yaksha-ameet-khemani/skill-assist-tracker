@@ -1,0 +1,15 @@
+{
+  "client": "Sony", "track": "SRE",
+  "toc_path": "Sony/Site Relability Engineer_105hr..xlsx",
+  "toc_file_name": "Site Relability Engineer_105hr..xlsx",
+  "toc_sheet": "Detailed Training Plan", "header_row": 2, "day_col": "B", "topic_col": "F",
+  "daily": {"first_row": 2, "last_row": 24, "day_col": "K", "name_col": "L",
+            "dates": [[6, "2026-09-09"], [24, "2026-10-01"]]},
+  "milestones": [
+    {"seq": "1", "name": "RetailPulse 24x7 - SLO & Observability Report", "date": "2026-09-08", "sheet_row": 7, "from": 6, "to": 16},
+    {"seq": "2", "name": "RetailPulse 24x7 - Incident Automation Summary", "date": "2026-09-08", "sheet_row": 8, "from": 20, "to": 27},
+    {"seq": "3", "name": "RetailPulse 24x7 - Performance & Capacity Report", "date": "2026-09-08", "sheet_row": 10, "from": 31, "to": 38},
+    {"seq": "4", "name": "RetailPulse 24x7 - AI-Assisted Incident Triage", "date": "2026-09-08", "sheet_row": 12, "from": 42, "to": 44}
+  ],
+  "pre": [{"name": "RetailPulse 24x7 - Order Service Log Triage", "date": "2026-09-08", "sheet_row": 4, "rows": [3]}]
+}

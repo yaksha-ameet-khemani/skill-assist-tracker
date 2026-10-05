@@ -1,0 +1,24 @@
+// Skill Assist Tracker on Cloudflare (free plan): one Worker serves the website (../web/dist) and /api/* over D1.
+// Deploy: (cd ../web && npm run build) && npx wrangler deploy
+{
+  "name": "skill-assist-tracker",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "../web/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "skill-assist-tracker",
+      "database_id": "bd001dd3-c52d-4422-ac41-4c8c20a716e7"
+    }
+  ],
+  "workers_dev": true,
+  // only the one workers.dev address; no per-version preview URLs
+  "preview_urls": false,
+  "observability": { "enabled": true }
+}

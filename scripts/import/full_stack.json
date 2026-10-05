@@ -1,0 +1,16 @@
+{
+  "client": "Sony", "track": "Full Stack",
+  "toc_path": "Sony/Updated_Sony_FSE_JavaBackend_React_ReactNative_TOC.xlsx",
+  "toc_file_name": "Updated_Sony_FSE_JavaBackend_React_ReactNative_TOC.xlsx",
+  "toc_sheet": "Detailed Training Plan", "header_row": 2, "day_col": "B", "topic_col": "F",
+  "daily": {"first_row": 2, "last_row": 37, "day_col": "P", "name_col": "Q",
+            "dates": [[13, "2026-09-29"], [18, "2026-09-10"], [37, "2026-09-30"]]},
+  "milestones": [
+    {"seq": "1", "name": "PulseCart OneJourney - Java Backend Development Readiness", "date": "2026-09-29", "sheet_row": 2, "from": 6, "to": 17},
+    {"seq": "2", "name": "PulseCart - Product Catalog - FSE - React – M2", "date": "2026-09-08", "sheet_row": 3, "from": 21, "to": 23},
+    {"seq": "3", "name": "PulseCart - Product Listing & Mini-Cart - FSE - React – M3", "date": "2026-09-08", "sheet_row": 4, "from": 27, "to": 33},
+    {"seq": "4", "name": "PulseCart - Mobile Orders - FSE - React – M4", "date": "2026-09-08", "sheet_row": 5, "from": 37, "to": 42},
+    {"seq": "5", "name": "PulseCart - Order Service API – M5", "date": "2026-09-08", "sheet_row": 6, "from": 46, "to": 52}
+  ],
+  "pre": [{"name": "PulseCart - Cart Summary Widget", "date": "2026-09-08", "sheet_row": 2, "rows": [3]}]
+}

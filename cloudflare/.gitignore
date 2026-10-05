@@ -1,0 +1,4 @@
+.wrangler/
+.dev.vars
+data.sql
+TEAM_PASSCODE.txt

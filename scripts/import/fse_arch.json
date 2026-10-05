@@ -1,0 +1,16 @@
+{
+  "client": "Sony", "track": "FSE Architect",
+  "toc_path": "Sony/Sony_FSE_Architect_Detailed_Training_Plan.xlsx",
+  "toc_file_name": "Sony_FSE_Architect_Detailed_Training_Plan.xlsx",
+  "toc_sheet": "Detailed Training Plan", "header_row": 4, "day_col": "B", "topic_col": "F",
+  "daily": {"first_row": 2, "last_row": 23, "day_col": "U", "name_col": "V",
+            "dates": [[7, "2026-09-17"], [23, "2026-09-24"]]},
+  "milestones": [
+    {"seq": "1", "name": "Vantage Retail - M1 – Hands-On", "date": "2026-09-16", "sheet_row": 19, "from": 8, "to": 12},
+    {"seq": "2", "name": "AI-Integrated Architecture - M2 – Hands-On", "date": "2026-09-17", "sheet_row": 21, "from": 15, "to": 19},
+    {"seq": "3", "name": "Cloud Platform Readiness - M3 – Hands-On", "date": "2026-09-17", "sheet_row": 22, "from": 22, "to": 25},
+    {"seq": "4", "name": "Secure Architecture - M4 – Hands-On", "date": "2026-09-17", "sheet_row": 23, "from": 28, "to": 31},
+    {"seq": "5", "name": "Business Case & Program Readiness - M5 – Hands-On", "date": "2026-09-17", "sheet_row": 24, "from": 34, "to": 36}
+  ],
+  "pre": [{"name": "Vantage Retail", "date": "2026-09-16", "sheet_row": 10, "rows": [5]}]
+}

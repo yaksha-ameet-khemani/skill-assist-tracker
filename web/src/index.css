@@ -1,0 +1,702 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --text: #1c2330;
+  --muted: #5f6b7a;
+  --border: #dde2e8;
+  --accent: #2f5bd3;
+  --accent-text: #ffffff;
+  --accent-soft: #e8eefc;
+  --danger: #c0392b;
+  --ok: #1e7a46;
+  --warn-bg: #fff4e0;
+  --warn-text: #8a5300;
+  --picked: #eaf6ee;
+  --header-row: #fff3c4;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #12151b;
+    --surface: #1a1f27;
+    --surface-2: #232933;
+    --text: #e6e9ee;
+    --muted: #98a2b0;
+    --border: #2f3743;
+    --accent: #6d8ff0;
+    --accent-text: #0e1320;
+    --accent-soft: #233056;
+    --danger: #ef6f60;
+    --ok: #5cc98b;
+    --warn-bg: #3a2c12;
+    --warn-text: #f3c26b;
+    --picked: #17321f;
+    --header-row: #3c3412;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 4px;
+}
+h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+h3 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+a {
+  color: var(--accent);
+}
+code {
+  background: var(--surface-2);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* ---- layout ---- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+.topbar .brand {
+  font-weight: 700;
+  margin-right: 12px;
+}
+.topbar a {
+  color: var(--text);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.topbar a:hover {
+  background: var(--surface-2);
+}
+.topbar a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.spacer {
+  flex: 1;
+}
+
+main {
+  padding: 20px 16px 48px;
+}
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+details.card > summary {
+  cursor: pointer;
+}
+
+/* ---- forms ---- */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+label.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+}
+input,
+select,
+textarea,
+button,
+.button {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+input[type='checkbox'] {
+  padding: 0;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+button,
+.button {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  background: var(--surface-2);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+.danger {
+  color: var(--danger);
+}
+button.small {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+button.link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+}
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.span-2 {
+  grid-column: span 2;
+}
+.span-3 {
+  grid-column: 1 / -1;
+}
+.grow {
+  flex: 1;
+  min-width: 220px;
+}
+.narrow {
+  width: 90px;
+}
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.col-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 6px;
+}
+.track-label {
+  min-width: 200px;
+  font-weight: 600;
+  align-self: center;
+}
+
+/* ---- tables ---- */
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  max-height: 70vh;
+}
+.table-wrap.short {
+  max-height: 360px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table.data th,
+table.data td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+table.data thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+  z-index: 1;
+}
+table.clickable tbody tr {
+  cursor: pointer;
+}
+table.clickable tbody tr:hover,
+table.data tbody tr:hover {
+  background: var(--surface-2);
+}
+tr.muted td {
+  opacity: 0.55;
+}
+
+.grid-preview {
+  overflow: auto;
+  max-height: 420px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.grid-preview table {
+  font-size: 0.78rem;
+  width: max-content;
+}
+.grid-preview th,
+.grid-preview td {
+  border: 1px solid var(--border);
+  padding: 3px 6px;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.grid-preview thead th,
+.grid-preview tbody th {
+  background: var(--surface-2);
+  color: var(--muted);
+  font-weight: 500;
+  position: sticky;
+}
+.grid-preview thead th {
+  top: 0;
+  z-index: 2;
+}
+.grid-preview tbody th {
+  left: 0;
+  z-index: 1;
+}
+.grid-preview tbody tr {
+  cursor: pointer;
+}
+.grid-preview tr.is-header td {
+  background: var(--header-row);
+  font-weight: 600;
+}
+.grid-preview tr.is-picked td {
+  background: var(--picked);
+}
+
+/* ---- bits ---- */
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 0.8rem;
+}
+.strong {
+  font-weight: 600;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.error {
+  color: var(--danger);
+}
+.ref {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  margin-left: 4px;
+}
+.badge.warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  margin-left: 0;
+}
+.topic-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.msg {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.msg-error {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+.msg-ok {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+.stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+}
+.stat-n {
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.stat-l {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.empty {
+  text-align: center;
+  padding: 40px 16px;
+}
+.row-details summary {
+  cursor: pointer;
+  margin-top: 2px;
+}
+.row-details dl {
+  margin: 6px 0 0;
+  display: grid;
+  gap: 4px;
+}
+.row-details dt {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.row-details dd {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.link-picker {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.login form {
+  width: min(380px, 100%);
+}
+
+@media (max-width: 640px) {
+  .span-2 {
+    grid-column: auto;
+  }
+}
+
+/* ---- simple tracker (home) ---- */
+.topbar .brand {
+  color: var(--text);
+  background: none;
+}
+.tracker {
+  max-height: none;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+.chip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.78rem;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.4);
+  display: grid;
+  place-items: start center;
+  padding: 48px 16px;
+  overflow: auto;
+  z-index: 20;
+}
+.panel {
+  width: min(760px, 100%);
+}
+.topic-block {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.topic-block dl {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 8px;
+}
+.topic-block dt {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.topic-block dd {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.tool-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.tool {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text);
+  text-decoration: none;
+}
+.tool:hover {
+  border-color: var(--accent);
+}
+.topic-block > button {
+  margin-top: 10px;
+  align-self: flex-start;
+}
+label.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+.merged-topics {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 2px;
+}
+
+/* ---- resizable columns (drag the right edge of a header, like Excel) ---- */
+table.data th.resizable {
+  position: sticky;
+  padding-right: 14px;
+  box-sizing: border-box; /* saved widths are measured border-box widths */
+}
+.col-resize {
+  position: absolute;
+  top: 0;
+  right: 0; /* fully inside the header: the next sticky header would cover anything outside */
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 2;
+}
+.col-resize::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  right: 0;
+  width: 1px;
+  background: var(--border);
+}
+.col-resize:hover::after,
+.col-resize:active::after {
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent, #2563eb);
+}
+/* After a resize every cell wraps to the width it was given (Excel "wrap text"), nothing is cut off. */
+table.data.resized td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* A long label in a normally one-line column (e.g. Day) wraps instead of stretching the column. */
+td.wrap-long {
+  min-width: 150px;
+  max-width: 220px;
+}
+table.data.resized th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- content links (Doc / Solution from the TestCase-Count-ALL sheet) ---- */
+td.strong a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 2px;
+}
+td.strong a:hover {
+  color: var(--accent);
+}
+.link-kind {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+a.small-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---- Doc link editing (home page) ---- */
+.link-btn {
+  padding: 0 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0.55;
+}
+tr:hover .link-btn {
+  opacity: 1;
+}
+.link-btn.add {
+  opacity: 1;
+  color: var(--warn-text);
+  border-color: var(--warn-text);
+}
+.link-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+}
+.link-edit input {
+  width: 100%;
+  font-weight: 400;
+}
+.row-gap {
+  display: flex;
+  gap: 6px;
+}
+.error-text {
+  color: var(--danger);
+  font-weight: 400;
+}
+/* Clients that still have items without a Doc link (Client filter). */
+option.missing-links {
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+/* ---- edit popup (home page ✎) ---- */
+.edit-btn {
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 4px 8px;
+}
+.edit-panel {
+  width: min(880px, 100%);
+}
+.edit-panel textarea {
+  width: 100%;
+  font: inherit;
+}
+.hint {
+  color: var(--muted);
+  font-weight: 400;
+}
+.chip-x {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+.chip-x:hover {
+  color: var(--danger);
+}
+.topic-matches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  max-height: 220px;
+  overflow: auto;
+}
+button.link-like {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---- team passcode (top bar) ---- */
+.passcode {
+  position: relative;
+}
+.passcode-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  width: 260px;
+  z-index: 30;
+  padding: 12px;
+}
