@@ -10,10 +10,7 @@ cloudflare/.dev.vars
 .env.*
 *.local
 
-# Data (content, not code): exports and database backups are kept as files, outside version history
-backups/
-cloudflare/data.sql
-links.sql
+# Data exports and database backups ARE versioned (owner's choice, 2026-10-05: office repo).
 
 # Logs / local tooling
 *.log
@@ -23,3 +20,6 @@ supabase/.branches/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Login (auth) dumps of the old local Supabase contain password hashes — never public
+backups/auth-data-*.sql
