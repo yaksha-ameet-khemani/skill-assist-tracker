@@ -102,6 +102,22 @@ cd skill-assist-portal
 ```
 If wrangler asks you to log in again: `npx wrangler login --browser=false` and open the printed link in Opera.
 
+## Data backup on GitHub (JSON) — the main backup since 2026-10-05
+
+`backups/data/` holds the **complete live database** (Cloudflare D1) as plain JSON: one file per table
+(`clients`, `tracks`, `toc_files`, `toc_rows`, `contents`, `content_toc_links`, `content_types`), **one record per
+line**, plus `counts.json`. Opens in any text editor; GitHub shows exactly which records changed between backups.
+
+```bash
+cd skill-assist-portal
+python3 scripts/backup_data.py          # read the live database -> backups/data/*.jsonl
+git add backups/data && git commit -m "Data backup $(date +%F)" && git push
+# restore (tested 2026-10-05: rebuilt copy identical to the backup)
+python3 scripts/restore_data.py         # backups/data -> restore.sql (empties tables, re-inserts everything)
+(cd cloudflare && npx wrangler d1 execute skill-assist-tracker --remote --file=../restore.sql)   # replaces ALL live data
+# an older backup: git checkout <commit> -- backups/data   then run restore_data.py
+```
+
 ## Resuming work / backups
 
 Data lives in the local Supabase database (Docker volume) and survives restarts.

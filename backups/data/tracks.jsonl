@@ -1,0 +1,161 @@
+{"id": 1, "client_id": 2, "name": "FSE Java & Angular", "notes": null, "extra": {}, "created_at": "2026-10-02T08:14:13.581Z", "csm": "Priyanka"}
+{"id": 2, "client_id": 2, "name": "Data Architect", "notes": null, "extra": {}, "created_at": "2026-10-02T09:00:03.965Z", "csm": "Priyanka"}
+{"id": 3, "client_id": 2, "name": "FSE Architect", "notes": null, "extra": {}, "created_at": "2026-10-02T09:06:33.925Z", "csm": "Priyanka"}
+{"id": 4, "client_id": 2, "name": "Full Stack", "notes": null, "extra": {}, "created_at": "2026-10-02T09:24:53.050Z", "csm": "Priyanka"}
+{"id": 5, "client_id": 2, "name": "SRE", "notes": null, "extra": {}, "created_at": "2026-10-02T09:31:49.143Z", "csm": "Priyanka"}
+{"id": 6, "client_id": 7, "name": ".NET", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 7, "client_id": 7, "name": "Azure", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 8, "client_id": 7, "name": "Java 8 to Java 25", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 9, "client_id": 7, "name": "GitHub Copilot Fundamentals", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 10, "client_id": 7, "name": "Prompt Engineering", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 11, "client_id": 7, "name": "React JS", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 12, "client_id": 7, "name": "AWS", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 13, "client_id": 7, "name": "SQL / SQL Server", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
+{"id": 14, "client_id": 8, "name": "MVR Pre-Assessment Fri-03", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 15, "client_id": 8, "name": "MVR Pre-Assessment Sat-01", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 16, "client_id": 8, "name": "MVR Pre-Assessment Fri-02", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 17, "client_id": 8, "name": "MVR Pre-Assessment Fri-01", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 18, "client_id": 8, "name": "MVR Pre-Assessment Sat-02", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 19, "client_id": 8, "name": "MVR Pre-Assessment Sat-03", "notes": null, "extra": {}, "created_at": "2026-10-02T10:07:01.300Z", "csm": "Anubha"}
+{"id": 20, "client_id": 9, "name": "Coding Assessment - 09 Sep 2026", "notes": null, "extra": {"date": "2026-09-09"}, "created_at": "2026-10-02T10:15:08.270Z", "csm": "Anubha"}
+{"id": 21, "client_id": 9, "name": "Coding Assessment - 12 Sep 2026", "notes": null, "extra": {"date": "2026-09-12"}, "created_at": "2026-10-02T10:15:08.270Z", "csm": "Anubha"}
+{"id": 22, "client_id": 9, "name": "Coding Assessment - 02 Sep 2026", "notes": null, "extra": {"date": "2026-09-02"}, "created_at": "2026-10-02T10:15:08.270Z", "csm": "Anubha"}
+{"id": 23, "client_id": 9, "name": "Chalapathi Institute Assessment", "notes": null, "extra": {}, "created_at": "2026-10-02T10:15:08.270Z", "csm": "Anubha"}
+{"id": 24, "client_id": 9, "name": "Coding Assessment - 05 Sep 2026", "notes": null, "extra": {"date": "2026-09-05"}, "created_at": "2026-10-02T10:15:08.270Z", "csm": "Anubha"}
+{"id": 25, "client_id": 2, "name": "GET 2026 · Java FSD (Track A)", "notes": null, "extra": {}, "created_at": "2026-10-02T10:20:35.122Z", "csm": "Lishika"}
+{"id": 26, "client_id": 10, "name": "Associate Automation Engineer_L1", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 27, "client_id": 10, "name": "Associate Test Analyst_L1", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 28, "client_id": 10, "name": "Associate Test Analyst_L2", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 29, "client_id": 10, "name": "Data Engineer_L1", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 30, "client_id": 10, "name": "Java Architect_L3", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 31, "client_id": 10, "name": "Java Developer_L2", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 32, "client_id": 10, "name": "Java Jr Developer_L1", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 33, "client_id": 10, "name": "No LP Name", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 34, "client_id": 10, "name": "Python Architect_L3", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 35, "client_id": 10, "name": "Python Developer_L2", "notes": null, "extra": {}, "created_at": "2026-10-02T11:25:46.020Z", "csm": "Internal Request"}
+{"id": 37, "client_id": 11, "name": "Week 1: Java Foundations, JVM Internals & DSA Kickoff", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 38, "client_id": 11, "name": "Week 2: Data Layer (SQL + MongoDB), Advanced DSA & Low-Level Design", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 39, "client_id": 11, "name": "Week 3: Spring Boot, Hibernate, Security & Microservices Kickoff", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 40, "client_id": 11, "name": "Week 4: Resilience, Kafka, JavaScript/TypeScript & React Fundamentals", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 41, "client_id": 11, "name": "Week 5: React Advanced, Full-Stack Integration & System Design", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 42, "client_id": 11, "name": "Week 6: Testing, Cloud/DevOps & Compact Capstone Extension", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 43, "client_id": 11, "name": "Pre-Assessments", "notes": null, "extra": {}, "created_at": "2026-10-02T11:36:26.752Z", "csm": "Internal"}
+{"id": 44, "client_id": 12, "name": "Week 1: Software Dev & Data Handling", "notes": null, "extra": {}, "created_at": "2026-10-02T11:44:00.360Z", "csm": "Ayman"}
+{"id": 45, "client_id": 12, "name": "Week 2: Development & Cloud Basics", "notes": null, "extra": {}, "created_at": "2026-10-02T11:44:00.360Z", "csm": "Ayman"}
+{"id": 46, "client_id": 12, "name": "Week 3: AWS & DevSecOps", "notes": null, "extra": {}, "created_at": "2026-10-02T11:44:00.360Z", "csm": "Ayman"}
+{"id": 47, "client_id": 12, "name": "Week 4: Advanced Cloud & Automation", "notes": null, "extra": {}, "created_at": "2026-10-02T11:44:00.360Z", "csm": "Ayman"}
+{"id": 48, "client_id": 13, "name": "Module 1: Modern Data Analytics Foundations", "notes": null, "extra": {}, "created_at": "2026-10-02T11:51:09.974Z", "csm": "Vemula Meghana"}
+{"id": 49, "client_id": 13, "name": "Module 6: Analytics Leadership", "notes": null, "extra": {}, "created_at": "2026-10-02T11:51:09.974Z", "csm": "Vemula Meghana"}
+{"id": 50, "client_id": 14, "name": "GIT", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 51, "client_id": 14, "name": "Database Fundamentals", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 52, "client_id": 14, "name": "HTML5 & CSS", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 53, "client_id": 14, "name": "MySQL", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 54, "client_id": 14, "name": "Java", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 55, "client_id": 14, "name": "JavaScript", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 56, "client_id": 14, "name": "Selenium", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 57, "client_id": 14, "name": "TypeScript", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 58, "client_id": 14, "name": "Cucumber", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 59, "client_id": 14, "name": "Capstone", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 60, "client_id": 14, "name": "Milestones", "notes": null, "extra": {}, "created_at": "2026-10-02T12:15:10.745Z", "csm": "Internal"}
+{"id": 61, "client_id": 15, "name": "Operating Systems – Linux, Windows & SAP", "notes": null, "extra": {}, "created_at": "2026-10-03T07:35:22.474Z", "csm": "Priyanka"}
+{"id": 63, "client_id": 15, "name": "Data Foundations", "notes": null, "extra": {}, "created_at": "2026-10-03T07:49:49.018Z", "csm": "Priyanka"}
+{"id": 64, "client_id": 15, "name": "Snowflake", "notes": null, "extra": {}, "created_at": "2026-10-03T07:49:49.018Z", "csm": "Priyanka"}
+{"id": 65, "client_id": 15, "name": "BI Engineering", "notes": null, "extra": {}, "created_at": "2026-10-03T07:49:49.018Z", "csm": "Priyanka"}
+{"id": 66, "client_id": 15, "name": "Data Bricks", "notes": null, "extra": {}, "created_at": "2026-10-03T07:49:49.018Z", "csm": "Priyanka"}
+{"id": 72, "client_id": 15, "name": "Cloud", "notes": null, "extra": {}, "created_at": "2026-10-03T08:05:56.313Z", "csm": "Lishika"}
+{"id": 73, "client_id": 18, "name": "Oracle", "notes": null, "extra": {}, "created_at": "2026-10-03T08:09:28.275Z", "csm": "Priyanka"}
+{"id": 74, "client_id": 19, "name": "DMW Syllabus", "notes": null, "extra": {}, "created_at": "2026-10-03T08:17:00.628Z", "csm": "Priyanka"}
+{"id": 77, "client_id": 20, "name": "AI & Azure", "notes": null, "extra": {}, "created_at": "2026-10-03T09:07:06.240Z", "csm": "Muzzamil"}
+{"id": 78, "client_id": 20, "name": "AI & Data", "notes": null, "extra": {}, "created_at": "2026-10-03T09:14:39.428Z", "csm": "Muzzamil"}
+{"id": 80, "client_id": 23, "name": "React with .NET", "notes": "Sheet title: React Bootcamp with .NET API (Router, Redux Toolkit, Hooks)", "extra": {}, "created_at": "2026-10-03T09:28:43.953Z", "csm": "Priyanka"}
+{"id": 81, "client_id": 23, "name": "Django with PostgreSQL", "notes": "Sheet title: Building Web Applications with Django and PostgreSQL", "extra": {}, "created_at": "2026-10-03T09:28:43.953Z", "csm": "Priyanka"}
+{"id": 82, "client_id": 24, "name": "SQL", "notes": null, "extra": {}, "created_at": "2026-10-03T09:33:16.662Z", "csm": "Priyanka"}
+{"id": 83, "client_id": 25, "name": "Backend Engineering", "notes": null, "extra": {}, "created_at": "2026-10-03T10:47:29.338Z", "csm": "Ayman"}
+{"id": 84, "client_id": 25, "name": "Frontend Engineering", "notes": null, "extra": {}, "created_at": "2026-10-03T10:47:29.338Z", "csm": "Ayman"}
+{"id": 85, "client_id": 25, "name": "Data Engineering", "notes": null, "extra": {}, "created_at": "2026-10-03T10:47:29.338Z", "csm": "Ayman"}
+{"id": 86, "client_id": 25, "name": "QA with GenAI", "notes": null, "extra": {}, "created_at": "2026-10-03T10:47:29.338Z", "csm": "Ayman"}
+{"id": 87, "client_id": 26, "name": "Python Programming & Git", "notes": null, "extra": {}, "created_at": "2026-10-03T10:56:36.736Z", "csm": "Ayman"}
+{"id": 88, "client_id": 26, "name": "Python for Analytics & SQL", "notes": null, "extra": {}, "created_at": "2026-10-03T10:56:36.736Z", "csm": "Ayman"}
+{"id": 89, "client_id": 27, "name": "Pre-Learning", "notes": null, "extra": {}, "created_at": "2026-10-03T11:35:31.922Z", "csm": "Ayman"}
+{"id": 90, "client_id": 27, "name": "Phase – 3 & 4 – FSE", "notes": null, "extra": {}, "created_at": "2026-10-03T11:35:31.922Z", "csm": "Ayman"}
+{"id": 91, "client_id": 27, "name": "Phase – 3", "notes": null, "extra": {}, "created_at": "2026-10-03T11:35:31.922Z", "csm": "Ayman"}
+{"id": 92, "client_id": 28, "name": "Module 1: ReactJs", "notes": null, "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 93, "client_id": 28, "name": "Module 2: NextJs", "notes": null, "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 94, "client_id": 28, "name": "Module 3: React Native", "notes": null, "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 95, "client_id": 28, "name": "Module 4: React Navigation & State", "notes": null, "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 96, "client_id": 28, "name": "AI-Augmented Systems Engineer", "notes": "Sheet title: AI-Augmented Systems Engineer / Intelligent Systems Architect / MBSE & AI", "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 97, "client_id": 28, "name": "Individual Assessments", "notes": null, "extra": {}, "created_at": "2026-10-03T11:40:32.443Z", "csm": "Aarti"}
+{"id": 104, "client_id": 30, "name": "Java", "notes": null, "extra": {}, "created_at": "2026-10-03T11:50:33.092Z", "csm": "Muzzamil"}
+{"id": 105, "client_id": 30, "name": "SQL", "notes": null, "extra": {}, "created_at": "2026-10-03T11:50:33.092Z", "csm": "Muzzamil"}
+{"id": 106, "client_id": 30, "name": "Java Fundamentals", "notes": null, "extra": {}, "created_at": "2026-10-03T11:50:33.092Z", "csm": "Aarti"}
+{"id": 107, "client_id": 31, "name": "SQL", "notes": null, "extra": {}, "created_at": "2026-10-04T10:45:36.239Z", "csm": null}
+{"id": 108, "client_id": 31, "name": "Python", "notes": null, "extra": {}, "created_at": "2026-10-04T10:45:36.239Z", "csm": null}
+{"id": 109, "client_id": 31, "name": "Java", "notes": null, "extra": {}, "created_at": "2026-10-04T10:45:36.239Z", "csm": null}
+{"id": 110, "client_id": 31, "name": "Big Data IBM PJT", "notes": null, "extra": {}, "created_at": "2026-10-04T10:52:14.896Z", "csm": "Ayman"}
+{"id": 123, "client_id": 31, "name": "Phase 1", "notes": null, "extra": {}, "created_at": "2026-10-04T11:17:36.487Z", "csm": "Ayman"}
+{"id": 124, "client_id": 31, "name": "Phase 2", "notes": null, "extra": {}, "created_at": "2026-10-04T11:17:36.487Z", "csm": "Ayman"}
+{"id": 125, "client_id": 31, "name": "Phase 3", "notes": null, "extra": {}, "created_at": "2026-10-04T11:17:36.487Z", "csm": "Ayman"}
+{"id": 129, "client_id": 32, "name": "UI", "notes": null, "extra": {}, "created_at": "2026-10-04T11:28:23.446Z", "csm": "Divyabharthi"}
+{"id": 130, "client_id": 32, "name": "BackEnd & FrontEnd", "notes": null, "extra": {}, "created_at": "2026-10-04T11:28:23.446Z", "csm": "Divyabharthi"}
+{"id": 131, "client_id": 32, "name": "Demo - Java", "notes": null, "extra": {}, "created_at": "2026-10-04T11:32:35.580Z", "csm": "Aditya"}
+{"id": 133, "client_id": 32, "name": "PostgreSQL", "notes": null, "extra": {}, "created_at": "2026-10-04T11:43:12.924Z", "csm": "Aarti"}
+{"id": 134, "client_id": 32, "name": "PLSQL", "notes": null, "extra": {}, "created_at": "2026-10-04T11:43:12.924Z", "csm": "Aarti"}
+{"id": 135, "client_id": 32, "name": "C++", "notes": null, "extra": {}, "created_at": "2026-10-04T11:43:12.924Z", "csm": "Aarti"}
+{"id": 136, "client_id": 32, "name": "Final - Java", "notes": null, "extra": {}, "created_at": "2026-10-04T11:48:26.921Z", "csm": "Aarti"}
+{"id": 137, "client_id": 32, "name": "Demo - FSD", "notes": null, "extra": {}, "created_at": "2026-10-04T11:52:06.815Z", "csm": "Priyanka"}
+{"id": 138, "client_id": 32, "name": "React", "notes": null, "extra": {}, "created_at": "2026-10-04T11:56:31.938Z", "csm": "Priyanka"}
+{"id": 139, "client_id": 33, "name": "Engineering & Programming Foundations", "notes": null, "extra": {}, "created_at": "2026-10-04T12:04:38.621Z", "csm": "Divyabharthi"}
+{"id": 140, "client_id": 33, "name": "Test Automation, CI/CD & AI-Driven QE", "notes": null, "extra": {}, "created_at": "2026-10-04T12:04:38.621Z", "csm": "Divyabharthi"}
+{"id": 143, "client_id": 33, "name": "Junit", "notes": null, "extra": {}, "created_at": "2026-10-04T12:09:10.941Z", "csm": "Divyabharthi"}
+{"id": 144, "client_id": 35, "name": "Snowflake Basic", "notes": null, "extra": {}, "created_at": "2026-10-04T12:15:58.432Z", "csm": "Priyanka"}
+{"id": 145, "client_id": 35, "name": "Snowflake Intermediate", "notes": null, "extra": {}, "created_at": "2026-10-04T12:15:58.432Z", "csm": "Priyanka"}
+{"id": 148, "client_id": 35, "name": "Pre-Assessment", "notes": null, "extra": {}, "created_at": "2026-10-04T12:19:14.018Z", "csm": "Ayman"}
+{"id": 152, "client_id": 35, "name": "Common Track Day 1-16", "notes": null, "extra": {}, "created_at": "2026-10-04T12:23:30.110Z", "csm": "Ayman"}
+{"id": 157, "client_id": 35, "name": "Engineering Track Day 17-24", "notes": null, "extra": {}, "created_at": "2026-10-04T12:28:52.728Z", "csm": "Ayman"}
+{"id": 158, "client_id": 39, "name": "Selenium with Python - 9th January", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 159, "client_id": 39, "name": "Java Selenium SDET - 9th January", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 160, "client_id": 39, "name": "Selenium with Python (batch 2 – starts on 3rd Feb)", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 161, "client_id": 39, "name": "NGA_JFS_Angular (3rd Feb)", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 162, "client_id": 39, "name": "SDET Final Assessment", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 163, "client_id": 39, "name": "NGA Java Angular", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 164, "client_id": 39, "name": "NGA SDET - 23rd April", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 165, "client_id": 39, "name": "Selenium with Python", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 166, "client_id": 39, "name": "NGA JFS Angular", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 167, "client_id": 39, "name": "SQL PLSQL Phase 1", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 168, "client_id": 39, "name": "Java J2EE", "notes": null, "extra": {}, "created_at": "2026-10-05T07:32:08.537Z", "csm": "Soma"}
+{"id": 180, "client_id": 8, "name": "Python Coding Assessment - 15 Sep 2026", "notes": null, "extra": {"date": "2026-09-15"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 181, "client_id": 8, "name": "Python Coding Assessment - 16 Sep 2026", "notes": null, "extra": {"date": "2026-09-16"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 182, "client_id": 8, "name": "Python Coding Assessment - 17 Sep 2026", "notes": null, "extra": {"date": "2026-09-17"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 183, "client_id": 8, "name": "Python Coding Assessment - 18 Sep 2026", "notes": null, "extra": {"date": "2026-09-18"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 184, "client_id": 8, "name": "Python Coding Assessment - 19 Sep 2026", "notes": null, "extra": {"date": "2026-09-19"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 185, "client_id": 8, "name": "C Hybrid Assessment", "notes": null, "extra": {}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 186, "client_id": 8, "name": "Python Coding Assessment - 21 Sep 2026", "notes": null, "extra": {"date": "2026-09-21"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 187, "client_id": 8, "name": "Python Coding Assessment - 22 Sep 2026", "notes": null, "extra": {"date": "2026-09-22"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 188, "client_id": 8, "name": "Python Coding Assessment - 23 Sep 2026", "notes": null, "extra": {"date": "2026-09-23"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 189, "client_id": 8, "name": "Python Coding Assessment - 24 Sep 2026", "notes": null, "extra": {"date": "2026-09-24"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 190, "client_id": 8, "name": "Python Coding Assessment - 25 Sep 2026", "notes": null, "extra": {"date": "2026-09-25"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 191, "client_id": 8, "name": "Python Coding Assessment - 26 Sep 2026", "notes": null, "extra": {"date": "2026-09-26"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 192, "client_id": 8, "name": "Python Coding Assessment - 28 Sep 2026", "notes": null, "extra": {"date": "2026-09-28"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 193, "client_id": 8, "name": "SQL Coding Assessment - 29 Sep 2026", "notes": null, "extra": {"date": "2026-09-29"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 194, "client_id": 8, "name": "SQL Coding Assessment - 30 Sep 2026", "notes": null, "extra": {"date": "2026-09-30"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 195, "client_id": 8, "name": "SQL Coding Assessment - 01 Oct 2026", "notes": null, "extra": {"date": "2026-10-01"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 196, "client_id": 8, "name": "SQL Coding Assessment - 02 Oct 2026", "notes": null, "extra": {"date": "2026-10-02"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 197, "client_id": 8, "name": "HTML Coding Assessment - 03 Oct 2026", "notes": null, "extra": {"date": "2026-10-03"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 198, "client_id": 8, "name": "SQL Coding Assessment - 05 Oct 2026", "notes": null, "extra": {"date": "2026-10-05"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 199, "client_id": 8, "name": "Python Coding Assessment - 06 Oct 2026", "notes": null, "extra": {"date": "2026-10-06"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 200, "client_id": 8, "name": "HTML Coding Assessment - 07 Oct 2026", "notes": null, "extra": {"date": "2026-10-07"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 201, "client_id": 8, "name": "Python Coding Assessment - 08 Oct 2026", "notes": null, "extra": {"date": "2026-10-08"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 202, "client_id": 8, "name": "CSS Coding Assessment - 09 Oct 2026", "notes": null, "extra": {"date": "2026-10-09"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 203, "client_id": 8, "name": "Python Coding Assessment - 10 Oct 2026", "notes": null, "extra": {"date": "2026-10-10"}, "created_at": "2026-10-05T09:33:31.356Z", "csm": "Anubha"}
+{"id": 204, "client_id": 27, "name": "TRACK 3: FULL STACK DEVELOPMENT", "notes": null, "extra": {}, "created_at": "2026-10-05T09:39:16.026Z", "csm": "Ayman"}
+{"id": 205, "client_id": 11, "name": "KARAT – Program 1 — Core Engineering Foundations", "notes": null, "extra": {}, "created_at": "2026-10-05T09:43:57.251Z", "csm": "Muzzamil"}
+{"id": 206, "client_id": 11, "name": "KARAT – Program 2 — Web & Delivery Foundations", "notes": null, "extra": {}, "created_at": "2026-10-05T09:43:57.251Z", "csm": "Muzzamil"}
+{"id": 207, "client_id": 32, "name": "GoLang", "notes": null, "extra": {}, "created_at": "2026-10-05T09:51:44.012Z", "csm": "Aarti"}
+{"id": 208, "client_id": 9, "name": "Coding Assessment - 16 Sep 2026", "notes": null, "extra": {"date": "2026-09-16"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 209, "client_id": 9, "name": "Coding Assessment - 19 Sep 2026", "notes": null, "extra": {"date": "2026-09-19"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 210, "client_id": 9, "name": "Coding Assessment - 23 Sep 2026", "notes": null, "extra": {"date": "2026-09-23"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 211, "client_id": 9, "name": "Coding Assessment - 26 Sep 2026", "notes": null, "extra": {"date": "2026-09-26"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 212, "client_id": 9, "name": "Coding Assessment - 30 Sep 2026", "notes": null, "extra": {"date": "2026-09-30"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 213, "client_id": 9, "name": "Coding Assessment - 03 Oct 2026", "notes": null, "extra": {"date": "2026-10-03"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
+{"id": 245, "client_id": 10, "name": "Data Engineer_L2", "notes": null, "extra": {}, "created_at": "2026-10-05T10:08:07.299Z", "csm": "Internal Request"}
+{"id": 247, "client_id": 26, "name": "Data Analytics with AI", "notes": null, "extra": {}, "created_at": "2026-10-05T10:16:46.074Z", "csm": "Ayman"}
