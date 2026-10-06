@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { cellRef, Message } from '../components/common'
 import { useColumnWidths } from '../components/columns'
 import { EditContent } from '../components/EditContent'
+import { GROUP_KEY, SUBTOPIC_KEY } from '../lib/similar'
 import { fetchAll, must, supabase, type ContentRow, type LinkedTopic } from '../lib/supabase'
 
 /**
@@ -65,13 +66,13 @@ function assessment(r: ContentRow): string | null {
 }
 
 /** Links found for the item in the TestCase-Count-ALL sheet (scripts/import/sync_doc_links.py). */
-type ContentLinks = { doc?: string; doc_kind?: string; solution?: string; test_link?: string; manual?: boolean }
-function links(r: ContentRow): ContentLinks {
+export type ContentLinks = { doc?: string; doc_kind?: string; solution?: string; test_link?: string; manual?: boolean }
+export function links(r: ContentRow): ContentLinks {
   const l = r.extra?.links
   return l && typeof l === 'object' ? (l as ContentLinks) : {}
 }
 
-const DOC_KIND: Record<string, [string, string]> = {
+export const DOC_KIND: Record<string, [string, string]> = {
   folder: ['📁', 'Open the Drive folder'],
   doc: ['📄', 'Open the Google Doc'],
   sheet: ['📊', 'Open the Google Sheet'],
@@ -190,7 +191,7 @@ function formatDate(iso: string | null): string {
 }
 
 /** A–Z ignoring capitals, with numbers in number order ("Week 2" before "Week 10"). */
-const abc = (a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true })
+export const abc = (a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true })
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 /** "Coding Assessment - 03 Oct 2026" → ["Coding Assessment", "2026-10-03"]; names without a trailing date → [name, null]. */
@@ -553,10 +554,9 @@ function orderedEntries(t: LinkedTopic): [string, string][] {
   return Object.entries(t.data).sort(([a], [b]) => pos(a) - pos(b))
 }
 
-/** Grouping columns shown above the topic: "Module" (Sony), "Phase / Module" (Mphasis), "Assessment Area" / "Sub-Category" (DXC), "Focus of the week" (EY). */
-const GROUP_KEY = /^module(?! \/ topic)|^phase|assessment area|sub[\s-]*categor|focus of the week/i
-/** Detail column shown under the topic: "Sub Topic" (Sony), "Key Concepts Covered" (Capgemini), "Coverage" / "Detailed Coverage" (EY). */
-const SUBTOPIC_KEY = /sub[\s-]*topic|key concepts|coverage/i
+// GROUP_KEY: grouping columns shown above the topic: "Module" (Sony), "Phase / Module" (Mphasis), "Assessment Area" /
+// "Sub-Category" (DXC), "Focus of the week" (EY). SUBTOPIC_KEY: detail column shown under the topic: "Sub Topic" (Sony),
+// "Key Concepts Covered" (Capgemini), "Coverage" / "Detailed Coverage" (EY). Both live in lib/similar.ts.
 
 /** Module, topic and sub-topics up front; every other TOC column behind a button. */
 function TopicBlock({ topic: t }: { topic: LinkedTopic }) {
@@ -685,7 +685,7 @@ function MergedTopics({ topics }: { topics: LinkedTopic[] }) {
   )
 }
 
-function TopicsPanel({ content, onClose }: { content: ContentRow; onClose: () => void }) {
+export function TopicsPanel({ content, onClose }: { content: ContentRow; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)

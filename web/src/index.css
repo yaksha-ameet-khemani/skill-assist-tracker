@@ -723,3 +723,49 @@ button.link-like {
 .ok-text {
   color: var(--accent);
 }
+
+/* ---- find similar content ---- */
+.used-in {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 3px;
+}
+.sim-pct {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.sim-bar {
+  display: inline-block;
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.sim-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.sim-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.sim-good {
+  color: var(--ok);
+}
+.sim-part {
+  color: var(--warn-text);
+}
+.sim-none {
+  color: var(--danger);
+}

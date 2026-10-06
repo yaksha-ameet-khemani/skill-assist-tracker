@@ -4,6 +4,7 @@ import { checkTeamKey, getTeamKey, setTeamKey } from './lib/db'
 import { ContentDetail } from './pages/ContentDetail'
 import { ContentImport } from './pages/ContentImport'
 import { Contents } from './pages/Contents'
+import { FindSimilar } from './pages/FindSimilar'
 import { TocUpload } from './pages/TocUpload'
 import { Topics } from './pages/Topics'
 import { Tools } from './pages/Tools'
@@ -17,6 +18,9 @@ export default function App() {
         <Link to="/" className="brand">
           Skill Assist Tracker
         </Link>
+        <Link to="/similar" title="Paste a new request's topics and see which existing content matches">
+          Find similar
+        </Link>
         <span className="spacer" />
         <Link to="/tools" className="small muted">
           More tools
@@ -26,6 +30,7 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Tracker />} />
+          <Route path="/similar" element={<FindSimilar />} />
           {/* Parked tools, reachable from "More tools" */}
           <Route path="/tools" element={<Tools />} />
           <Route path="/content" element={<Contents />} />
