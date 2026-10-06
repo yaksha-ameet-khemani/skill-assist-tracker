@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Message } from '../components/common'
-import { buildIndex, findSimilar, matchingLines, splitTopics, type Candidate } from '../lib/similar'
+import { buildIndex, findSimilar, matchingLines, splitTopics, words, type Candidate } from '../lib/similar'
 import { fetchAll, supabase, type ContentRow } from '../lib/supabase'
 import { abc, DOC_KIND, links, TopicsPanel } from './Tracker'
 
@@ -29,7 +29,13 @@ function Name({ c }: { c: Candidate }) {
       {l.solution && (
         <>
           {' '}
-          <a className="small-link" href={l.solution} target="_blank" rel="noopener noreferrer" title="Open the solution">
+          <a
+            className="small-link"
+            href={l.solution}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open the solution"
+          >
             Solution
           </a>
         </>
@@ -56,7 +62,50 @@ function UsedIn({ c, onView }: { c: Candidate; onView: (r: ContentRow) => void }
   )
 }
 
+/** Words of the text an item does not cover, as chips ("all covered" when none). */
+function Missing({ all, matched, text }: { all: string[]; matched: string[]; text: string }) {
+  // Show each word as it was typed ("Kubernetes"), not its matching form ("kubernete").
+  const typed = new Map<string, string>()
+  for (const raw of text.split(/[\s,;:/()]+/)) {
+    const w = words(raw)[0]
+    if (w && !typed.has(w)) typed.set(w, raw.replace(/[.]+$/, ''))
+  }
+  const miss = all.filter((w) => !matched.includes(w)).map((w) => typed.get(w) ?? w)
+  if (!miss.length) return <span className="sim-good small">all covered</span>
+  return (
+    <div className="chips">
+      {miss.slice(0, 10).map((w) => (
+        <span key={w} className="chip">
+          {w}
+        </span>
+      ))}
+      {miss.length > 10 && <span className="muted small">+{miss.length - 10}</span>}
+    </div>
+  )
+}
+
 const DRAFT_KEY = 'find-similar-topics'
+const MODE_KEY = 'find-similar-mode'
+
+/** "split": each topic of the text matched on its own; "whole": the whole text is one topic. */
+type Mode = 'split' | 'whole'
+const read = (key: string) => {
+  try {
+    return sessionStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+const keep = (key: string, v: string) => {
+  try {
+    sessionStorage.setItem(key, v)
+  } catch {
+    /* not kept: fine */
+  }
+}
+/** The topics to look for: the text split into topics, or the whole text as one. */
+const topicsOf = (text: string, mode: Mode) =>
+  mode === 'whole' ? (text.trim() ? [text.replace(/\s+/g, ' ').trim()] : []) : splitTopics(text)
 
 /**
  * Paste the topics of a new client request; see which existing content already covers them,
@@ -65,14 +114,13 @@ const DRAFT_KEY = 'find-similar-topics'
 export function FindSimilar() {
   const [rows, setRows] = useState<ContentRow[] | null>(null)
   const [error, setError] = useState('')
-  const [text, setText] = useState(() => {
-    try {
-      return sessionStorage.getItem(DRAFT_KEY) ?? ''
-    } catch {
-      return ''
-    }
-  })
-  const [asked, setAsked] = useState<string[]>(() => splitTopics(text))
+  const [text, setText] = useState(() => read(DRAFT_KEY) ?? '')
+  const [mode, setMode] = useState<Mode>(() => (read(MODE_KEY) === 'whole' ? 'whole' : 'split'))
+  // What was searched: the topics and how they were matched.
+  const [asked, setAsked] = useState<{ topics: string[]; mode: Mode }>(() => ({
+    topics: topicsOf(text, mode),
+    mode,
+  }))
   const [type, setType] = useState('')
   const [client, setClient] = useState('')
   const [onlyLinked, setOnlyLinked] = useState(false)
@@ -90,22 +138,31 @@ export function FindSimilar() {
   const clients = useMemo(() => [...new Set((rows ?? []).map((r) => r.client_name))].sort(abc), [rows])
 
   const found = useMemo(() => {
-    if (!index || !asked.length) return null
-    return findSimilar(index, asked, (c) =>
-      c.rows.some(
-        (r) => (!type || r.content_type === type) && (!client || r.client_name === client) && (!onlyLinked || !!links(r).doc),
-      ),
+    if (!index || !asked.topics.length) return null
+    return findSimilar(
+      index,
+      asked.topics,
+      (c) =>
+        c.rows.some(
+          (r) =>
+            (!type || r.content_type === type) &&
+            (!client || r.client_name === client) &&
+            (!onlyLinked || !!links(r).doc),
+        ),
+      asked.mode === 'whole',
     )
   }, [index, asked, type, client, onlyLinked])
 
-  const search = () => {
-    setAsked(splitTopics(text))
+  const search = (m: Mode = mode) => {
+    setAsked({ topics: topicsOf(text, m), mode: m })
     setLimit(20)
-    try {
-      sessionStorage.setItem(DRAFT_KEY, text)
-    } catch {
-      /* draft not kept: fine */
-    }
+    keep(DRAFT_KEY, text)
+  }
+  // Switching the mode searches again straight away, so both ways are easy to compare.
+  const changeMode = (m: Mode) => {
+    setMode(m)
+    keep(MODE_KEY, m)
+    if (asked.topics.length) search(m)
   }
 
   const counts = found
@@ -143,8 +200,21 @@ export function FindSimilar() {
             }}
           />
         </label>
+        <div className="mode-switch" role="radiogroup" aria-label="How to search">
+          <label className="check" title="Every line / comma-separated item is a topic of its own, checked separately">
+            <input type="radio" name="mode" checked={mode === 'split'} onChange={() => changeMode('split')} /> Split
+            into topics <span className="muted small">– check each topic separately</span>
+          </label>
+          <label
+            className="check"
+            title="The whole text is one topic, e.g. one TOC cell: find content covering all of it together"
+          >
+            <input type="radio" name="mode" checked={mode === 'whole'} onChange={() => changeMode('whole')} /> Whole
+            text as one topic <span className="muted small">– find content covering all of it together</span>
+          </label>
+        </div>
         <div className="filters">
-          <button className="primary" onClick={search} disabled={!rows || !text.trim()}>
+          <button className="primary" onClick={() => search()} disabled={!rows || !text.trim()}>
             {rows ? 'Find matches' : 'Loading tracker…'}
           </button>
           <select value={type} onChange={(e) => setType(e.target.value)} aria-label="Type">
@@ -160,15 +230,15 @@ export function FindSimilar() {
             ))}
           </select>
           <label className="check">
-            <input type="checkbox" checked={onlyLinked} onChange={(e) => setOnlyLinked(e.target.checked)} /> Only content with a
-            Doc link
+            <input type="checkbox" checked={onlyLinked} onChange={(e) => setOnlyLinked(e.target.checked)} /> Only
+            content with a Doc link
           </label>
           {text.trim() && (
             <button
               className="small"
               onClick={() => {
                 setText('')
-                setAsked([])
+                setAsked({ topics: [], mode })
               }}
             >
               Clear
@@ -180,21 +250,23 @@ export function FindSimilar() {
       {found && counts && (
         <>
           <section className="stack">
-            <h2>Your topics ({asked.length})</h2>
-            <div className="stats">
-              <div className="stat">
-                <span className="stat-n sim-good">{counts.good}</span>
-                <span className="stat-l">already exist – reuse</span>
+            <h2>{asked.mode === 'whole' ? 'Your text, as one topic' : `Your topics (${asked.topics.length})`}</h2>
+            {asked.mode === 'split' && (
+              <div className="stats">
+                <div className="stat">
+                  <span className="stat-n sim-good">{counts.good}</span>
+                  <span className="stat-l">already exist – reuse</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-n sim-part">{counts.part}</span>
+                  <span className="stat-l">partly covered – adapt</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-n sim-none">{counts.none}</span>
+                  <span className="stat-l">not found – create new</span>
+                </div>
               </div>
-              <div className="stat">
-                <span className="stat-n sim-part">{counts.part}</span>
-                <span className="stat-l">partly covered – adapt</span>
-              </div>
-              <div className="stat">
-                <span className="stat-n sim-none">{counts.none}</span>
-                <span className="stat-l">not found – create new</span>
-              </div>
-            </div>
+            )}
             <div className="table-wrap">
               <table className="data">
                 <thead>
@@ -205,7 +277,7 @@ export function FindSimilar() {
                   </tr>
                 </thead>
                 <tbody>
-                  {asked.map((t, i) => {
+                  {asked.topics.map((t, i) => {
                     const hits = found.byTopic[i]
                     const v = verdict(hits[0]?.score ?? 0)
                     return (
@@ -218,7 +290,11 @@ export function FindSimilar() {
                           {hits.length === 0 && <span className="muted">Nothing in the tracker mentions this.</span>}
                           <ul className="used-in">
                             {hits.map((h) => (
-                              <li key={h.result.candidate.key} className={h.score < 0.5 ? 'muted' : undefined} title={h.score < 0.5 ? 'Weak match' : undefined}>
+                              <li
+                                key={h.result.candidate.key}
+                                className={h.score < 0.5 ? 'muted' : undefined}
+                                title={h.score < 0.5 ? 'Weak match' : undefined}
+                              >
                                 <span className="sim-pct">{pct(h.score)}</span> <Name c={h.result.candidate} />{' '}
                                 <span className="muted small">
                                   · {[...new Set(h.result.candidate.rows.map((r) => r.client_name))].join(', ')}
@@ -238,7 +314,10 @@ export function FindSimilar() {
           <section className="stack">
             <h2>Best matching content</h2>
             <p className="muted small">
-              Ranked by how much of all your topics each item covers. Content used for several clients is listed once.
+              {asked.mode === 'whole'
+                ? 'Ranked by how much of your text each item covers.'
+                : 'Ranked by how much of all your topics each item covers.'}{' '}
+              Content used for several clients is listed once.
             </p>
             {found.ranked.length === 0 && <p className="muted">No content in the tracker shares these topics.</p>}
             {found.ranked.length > 0 && (
@@ -249,7 +328,7 @@ export function FindSimilar() {
                       <th>Match</th>
                       <th>Content</th>
                       <th>Type</th>
-                      <th>Covers</th>
+                      <th>{asked.mode === 'whole' ? 'Not covered' : 'Covers'}</th>
                       <th>Matching TOC topics</th>
                       <th>Used in</th>
                     </tr>
@@ -270,9 +349,15 @@ export function FindSimilar() {
                             <Name c={c} />
                           </td>
                           <td className="nowrap">{[...new Set(c.rows.map((x) => x.content_type))].join(', ')}</td>
-                          <td className="nowrap" title="Your topics this item covers at least half of">
-                            {covered} / {asked.length}
-                          </td>
+                          {asked.mode === 'whole' ? (
+                            <td title="Words of your text this item does not mention: what would need adapting">
+                              <Missing all={found.topicWords[0]} matched={r.matched} text={asked.topics[0]} />
+                            </td>
+                          ) : (
+                            <td className="nowrap" title="Your topics this item covers at least half of">
+                              {covered} / {asked.topics.length}
+                            </td>
+                          )}
                           <td>
                             <ul className="topic-list small">
                               {matchingLines(c, r.matched).map((l) => (

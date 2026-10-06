@@ -556,7 +556,20 @@ function orderedEntries(t: LinkedTopic): [string, string][] {
 
 // GROUP_KEY: grouping columns shown above the topic: "Module" (Sony), "Phase / Module" (Mphasis), "Assessment Area" /
 // "Sub-Category" (DXC), "Focus of the week" (EY). SUBTOPIC_KEY: detail column shown under the topic: "Sub Topic" (Sony),
-// "Key Concepts Covered" (Capgemini), "Coverage" / "Detailed Coverage" (EY). Both live in lib/similar.ts.
+// "Key Concepts Covered" (Capgemini), "Coverage" / "Detailed Coverage" (EY), "Core Topics" (Straive). Both live in lib/similar.ts.
+
+/** Sub-topics; a " · " list (Straive "Core Topics") becomes bullet points. */
+function SubTopics({ text }: { text: string }) {
+  const items = text.split(/\s+·\s+/).map((x) => x.trim()).filter(Boolean)
+  if (items.length < 2) return <>{text}</>
+  return (
+    <ul className="merged-topics">
+      {items.map((item, i) => (
+        <li key={i}>{item}</li>
+      ))}
+    </ul>
+  )
+}
 
 /** Module, topic and sub-topics up front; every other TOC column behind a button. */
 function TopicBlock({ topic: t }: { topic: LinkedTopic }) {
@@ -584,7 +597,9 @@ function TopicBlock({ topic: t }: { topic: LinkedTopic }) {
         {subTopics && (
           <div>
             <dt>{subTopics[0]}</dt>
-            <dd>{subTopics[1]}</dd>
+            <dd>
+              <SubTopics text={subTopics[1]} />
+            </dd>
           </div>
         )}
       </dl>

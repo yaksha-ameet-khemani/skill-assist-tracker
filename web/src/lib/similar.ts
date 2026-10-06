@@ -8,7 +8,7 @@ import type { ContentRow, LinkedTopic } from './supabase'
 
 // Same columns the home page shows besides the topic: module / phase above it, sub-topics under it.
 export const GROUP_KEY = /^module(?! \/ topic)|^phase|assessment area|sub[\s-]*categor|focus of the week/i
-export const SUBTOPIC_KEY = /sub[\s-]*topic|key concepts|coverage/i
+export const SUBTOPIC_KEY = /sub[\s-]*topic|key concepts|coverage|core topics/i
 
 // Spellings that mean the same thing, applied before splitting into words.
 const PHRASES: [RegExp, string][] = [
@@ -109,7 +109,7 @@ export function splitTopics(text: string): string[] {
  */
 function pieces(text: string): Set<string>[] {
   const out: Set<string>[] = []
-  for (const part of text.split(/[\n;|•]+/)) {
+  for (const part of text.split(/[\n;|•·]+/)) {
     const items = part.split(',').map((x) => x.trim()).filter(Boolean)
     if (items.length <= 3) {
       const ws = words(part)
@@ -211,19 +211,27 @@ function share(qWords: string[], has: (w: string) => boolean, ix: Index): { scor
 
 /**
  * Content linked to a whole TOC (hundreds of topic words, e.g. a capstone over a full course) mentions nearly
- * everything; its topic matches count less (down to half), its name matches fully.
+ * everything; its topic matches count less (down to half), its name matches fully. "Broad" is measured against the
+ * search: a long pasted TOC cell (dozens of words) naturally matches content with long topics, so the allowance grows
+ * with it (3 topic words per searched word, at least 60); a short "Kafka" search still pushes whole-TOC content down.
  */
-function breadth(c: Candidate): number {
-  return Math.min(1, Math.max(0.5, Math.sqrt(60 / Math.max(1, c.topicWords.size))))
+function breadth(c: Candidate, searchedWords: number): number {
+  const allowance = Math.max(60, 3 * searchedWords)
+  return Math.min(1, Math.max(0.5, Math.sqrt(allowance / Math.max(1, c.topicWords.size))))
 }
 
 /**
  * How well this content covers one requested topic: the best of its name alone, or its name plus one piece of its
  * TOC topics. "SQL joins" needs "sql" and "join" in the same place, not "SQL" on day 3 and "join" on day 9.
  */
-function coverage(qWords: string[], c: Candidate, ix: Index): { score: number; matched: string[] } {
+function coverage(qWords: string[], c: Candidate, ix: Index, whole: boolean): { score: number; matched: string[] } {
   let best = share(qWords, (w) => c.nameWords.has(w), ix)
-  const b = breadth(c)
+  const b = breadth(c, qWords.length)
+  if (whole) {
+    // One long text (a whole TOC cell): its words may sit anywhere in the content's topics.
+    const m = share(qWords, (w) => c.nameWords.has(w) || c.topicWords.has(w), ix)
+    return m.score * b > best.score ? { score: m.score * b, matched: m.matched } : best
+  }
   for (const p of c.pieces) {
     const m = share(qWords, (w) => c.nameWords.has(w) || p.has(w), ix)
     if (m.score * b > best.score) best = { score: m.score * b, matched: m.matched }
@@ -231,17 +239,23 @@ function coverage(qWords: string[], c: Candidate, ix: Index): { score: number; m
   return best
 }
 
-export function findSimilar(ix: Index, topics: string[], keep: (c: Candidate) => boolean) {
+/**
+ * `whole` = the text is one topic (e.g. a pasted TOC cell): content is scored on how much of the whole text it covers
+ * across all its topics. Otherwise each topic is matched on its own, within one piece of the content's topics.
+ */
+export function findSimilar(ix: Index, topics: string[], keep: (c: Candidate) => boolean, whole = false) {
   const qs = topics.map((t) => [...new Set(words(t))])
   const pool = ix.candidates.filter(keep)
   const results: Result[] = pool.map((c) => {
-    const per = qs.map((q) => coverage(q, c, ix))
+    const per = qs.map((q) => coverage(q, c, ix, whole))
     const perName = qs.map((q) => share(q, (w) => c.nameWords.has(w), ix).score)
     const matched = [...new Set(per.flatMap((p) => p.matched))]
     // Small bonus when the content name itself carries the words: "SQL - Joins" beats an item merely linked to a SQL day.
     const nameBonus = perName.reduce((s, x) => s + x, 0) / (perName.length || 1)
     const avg = per.reduce((s, p) => s + p.score, 0) / (per.length || 1)
-    return { candidate: c, score: Math.min(1, avg * 0.9 + nameBonus * 0.1), perTopic: per.map((p) => p.score), perTopicName: perName, matched }
+    // One whole text: its coverage is the score (same number in both tables).
+    const score = whole ? avg : Math.min(1, avg * 0.9 + nameBonus * 0.1)
+    return { candidate: c, score, perTopic: per.map((p) => p.score), perTopicName: perName, matched }
   })
   // Ties: the more focused content (fewer linked topic words) first.
   const narrower = (a: Result, b: Result) => a.candidate.topicWords.size - b.candidate.topicWords.size

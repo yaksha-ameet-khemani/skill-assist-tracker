@@ -769,3 +769,8 @@ button.link-like {
 .sim-none {
   color: var(--danger);
 }
+.mode-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
