@@ -3,6 +3,9 @@
 // limit, offset, values, onConflict, ignoreDuplicates, returning, single}. Reading is open to anyone with the link;
 // insert / update / upsert / delete need the team passcode (secret TEAM_KEY) in the "x-team-key" header.
 // Only the tables and columns listed below are accepted, so the SQL is always built from known names.
+// POST /api/analyze {content_id}: Gemini tags + quality score for one item (analyze.js; local copy only).
+
+import { analyze, geminiModel } from './analyze.js'
 
 const TABLES = {
   clients: ['id', 'name', 'notes', 'extra', 'created_at'],
@@ -22,9 +25,14 @@ const VIEWS = {
                'row_number', 'day_label', 'topic', 'data', 'data_text', 'content_count', 'contents'],
   v_toc_files: ['id', 'client_id', 'track_id', 'file_name', 'sheet_name', 'header_row', 'columns', 'day_column', 'topic_column',
                 'source_link', 'notes', 'extra', 'uploaded_by', 'created_at', 'client_name', 'track_name', 'row_count'],
+  // Content analysis (analysis_schema.sql): read-only here, written by /api/analyze and the scripts. The text itself
+  // is not listed: the page only needs to know what was fetched.
+  content_text: ['content_id', 'files', 'text_hash', 'error', 'fetched_at'],
+  content_analysis: ['content_id', 'quality_band', 'confidence', 'low_confidence', 'result', 'model', 'prompt_version',
+                     'text_hash', 'analyzed_at'],
 }
 // Columns holding JSON text in D1, returned to the website as objects.
-const JSON_COLS = new Set(['extra', 'data', 'columns', 'topics', 'contents'])
+const JSON_COLS = new Set(['extra', 'data', 'columns', 'topics', 'contents', 'files', 'result'])
 // Upsert targets as the website names them -> the matching unique index in schema.sql.
 const CONFLICT = {
   'contents:client_id,track_id,content_type,sequence_label,name':
@@ -155,6 +163,18 @@ async function api(request, env) {
   const keyOk = !!env.TEAM_KEY && key === env.TEAM_KEY
 
   if (url.pathname === '/api/check-key') return json({ ok: keyOk }, keyOk ? 200 : 401)
+  if (url.pathname === '/api/analyze') {
+    // Only where a Gemini key is set (the local copy: cloudflare/.dev.vars); the live site just shows pushed results.
+    if (request.method === 'GET') return json({ available: !!env.GEMINI_API_KEY, model: geminiModel(env) })
+    if (!env.GEMINI_API_KEY) return json({ error: 'Analysis runs on the local copy only (no Gemini key here).', code: 'no_key' }, 404)
+    if (!keyOk) return json({ error: 'Enter the team passcode (🔒 at the top right) to save changes.', code: 'passcode' }, 401)
+    try {
+      const { content_id, model, save } = await request.json()
+      return json(await analyze(env, Number(content_id), { model, save }))
+    } catch (e) {
+      return json({ error: String(e?.message ?? e), code: e?.code ?? 'server_error', detail: e?.detail ?? null }, e?.status ?? 500)
+    }
+  }
   if (url.pathname !== '/api/db' || request.method !== 'POST') return json({ data: null, error: { message: 'Not found' } }, 404)
 
   const q = await request.json()

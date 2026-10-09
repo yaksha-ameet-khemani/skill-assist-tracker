@@ -135,3 +135,5 @@ select tf.id, tf.client_id, tf.track_id, tf.file_name, tf.sheet_name, tf.header_
 from toc_files tf
 join clients cl on cl.id = tf.client_id
 left join tracks t on t.id = tf.track_id;
+
+-- Content analysis tables: see analysis_schema.sql

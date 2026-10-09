@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const TOOLS = [
+  { to: '/analyze', name: 'Analyze content', about: 'Gemini tags each item and scores its quality (local copy).' },
   { to: '/toc/upload', name: 'Upload TOC', about: 'Read a TOC Excel and save its rows.' },
   { to: '/content/import', name: 'Import content', about: 'Read a content list Excel and link items to TOC rows.' },
   { to: '/content', name: 'Content (detailed)', about: 'Filters, counts by type, Excel export, add/edit content and links.' },

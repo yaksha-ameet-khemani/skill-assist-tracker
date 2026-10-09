@@ -75,6 +75,22 @@ The core tables are fixed and small (`clients`, `tracks`, `toc_files`, `toc_rows
   Keeping changes as migration files means the cloud database can be brought to the same state
   with one command later.
 
+## Analyze content (Gemini) — local copy, since 2026-10-06
+
+Content Analyzer's tags + skeptical quality score, per item, with the free Gemini API (key in `cloudflare/.dev.vars` as
+`GEMINI_API_KEY`). Works client by client, 10 items at a time:
+
+```bash
+cd skill-assist-portal
+python3 scripts/analyze/fetch_content.py              # list clients: linked / fetched / analysed
+python3 scripts/analyze/fetch_content.py "Invesco"    # pull the next 10 items' files (content-cache/, not in Git)
+# then localhost:5173 → More tools → Analyze content → "Analyze next 10" (or Analyze on one row)
+python3 scripts/analyze/run_next.py "Invesco"          # or: fetch + analyse the next 10 one by one, retrying by itself when Gemini is busy
+python3 scripts/analyze/push_results.py "Invesco"     # when the client is done: copy its results to the live site
+```
+Code: `cloudflare/src/analyze.js` (prompt + Gemini call), tables in `cloudflare/analysis_schema.sql`, page
+`web/src/pages/Analyze.tsx`. Design, decisions and status: `docs/content-analysis.md`. Only links shared as "anyone with the link" can be fetched.
+
 ## Online (Cloudflare, free) — live since 2026-10-05
 
 **Site:** https://skill-assist-tracker.skillassisttracker.workers.dev (Cloudflare account maryshibu204@gmail.com,

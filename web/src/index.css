@@ -774,3 +774,103 @@ button.link-like {
   flex-wrap: wrap;
   gap: 4px 20px;
 }
+
+/* Analyze content page (2026-10-06) */
+.analyze-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.num-inline {
+  width: 3.5em;
+  padding: 0 4px;
+  margin-left: 4px;
+}
+.linklike {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+.qband {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.q-poor {
+  color: var(--danger);
+}
+.q-fair {
+  color: var(--warn-text);
+  background: var(--warn-bg);
+}
+.q-good {
+  color: var(--ok);
+}
+.q-excellent {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.analyze-table tr.open td {
+  background: var(--surface-2);
+}
+.analyze-table tr.detail td {
+  background: var(--surface);
+}
+.analysis {
+  gap: 8px;
+  max-width: 1000px;
+}
+.analysis p {
+  margin: 0;
+}
+.analysis .flags {
+  margin: 0;
+  padding-left: 4px;
+  list-style: none;
+  color: var(--warn-text);
+}
+.analysis .subscores td {
+  padding: 2px 10px 2px 0;
+  vertical-align: top;
+}
+.analysis .tags {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 12px;
+  margin: 0;
+}
+.analysis .tags dt {
+  color: var(--muted);
+}
+.analysis .tags dd {
+  margin: 0;
+}
+.error-popup {
+  width: min(620px, 100%);
+  border-top: 4px solid var(--danger, #c0392b);
+}
+.error-popup p {
+  margin: 0;
+}
+.error-details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+}
+.error-details dt {
+  color: var(--muted);
+}
+.error-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

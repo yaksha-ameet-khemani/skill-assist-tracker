@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { Analyze } from './pages/Analyze'
 import { checkTeamKey, getTeamKey, setTeamKey } from './lib/db'
 import { ContentDetail } from './pages/ContentDetail'
 import { ContentImport } from './pages/ContentImport'
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/content/:id" element={<ContentDetail />} />
           <Route path="/topics" element={<Topics />} />
           <Route path="/toc/upload" element={<TocUpload />} />
+          <Route path="/analyze" element={<Analyze />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
