@@ -1351,3 +1351,36 @@
 {"id": 1935, "toc_file_id": 27, "row_number": 24, "day_label": null, "topic": "SQL Server", "data": {"Skill": "Data Analytics with AI", "Focus / Topics": "SQL Server"}}
 {"id": 1936, "toc_file_id": 29, "row_number": 2, "day_label": null, "topic": "ReactJs", "data": {"Topic": "ReactJs", "Module": "Module 1", "Subtopics": "after useCallback"}}
 {"id": 1937, "toc_file_id": 29, "row_number": 3, "day_label": null, "topic": "ReactJs", "data": {"Topic": "ReactJs", "Module": "Module 1", "Subtopics": "After Dark Mode Integration"}}
+{"id": 1938, "toc_file_id": 8, "row_number": 8, "day_label": null, "topic": "Mini backend project", "data": {"Topic": "Mini backend project"}}
+{"id": 1939, "toc_file_id": 8, "row_number": 9, "day_label": null, "topic": "JDBC", "data": {"Topic": "JDBC"}}
+{"id": 1940, "toc_file_id": 8, "row_number": 10, "day_label": null, "topic": "HTML5", "data": {"Topic": "HTML5"}}
+{"id": 1941, "toc_file_id": 8, "row_number": 11, "day_label": null, "topic": "CSS3", "data": {"Topic": "CSS3"}}
+{"id": 1942, "toc_file_id": 8, "row_number": 12, "day_label": null, "topic": "bootstrap", "data": {"Topic": "bootstrap"}}
+{"id": 1943, "toc_file_id": 8, "row_number": 13, "day_label": null, "topic": "React components", "data": {"Topic": "React components"}}
+{"id": 1944, "toc_file_id": 8, "row_number": 14, "day_label": null, "topic": "React hooks and API integration", "data": {"Topic": "React hooks and API integration"}}
+{"id": 1945, "toc_file_id": 8, "row_number": 15, "day_label": null, "topic": "JDBC integration", "data": {"Topic": "JDBC integration"}}
+{"id": 1946, "toc_file_id": 86, "row_number": 2, "day_label": null, "topic": "Stacks", "data": {"Topic": "Stacks"}}
+{"id": 1947, "toc_file_id": 86, "row_number": 3, "day_label": null, "topic": "String", "data": {"Topic": "String"}}
+{"id": 1948, "toc_file_id": 86, "row_number": 4, "day_label": null, "topic": "Exception", "data": {"Topic": "Exception"}}
+{"id": 1949, "toc_file_id": 86, "row_number": 5, "day_label": null, "topic": "Sorting", "data": {"Topic": "Sorting"}}
+{"id": 1950, "toc_file_id": 86, "row_number": 6, "day_label": null, "topic": "Logical Queries / String", "data": {"Topic": "Logical Queries / String"}}
+{"id": 1951, "toc_file_id": 86, "row_number": 7, "day_label": null, "topic": "MVC", "data": {"Topic": "MVC"}}
+{"id": 1952, "toc_file_id": 86, "row_number": 8, "day_label": null, "topic": "Joins", "data": {"Topic": "Joins"}}
+{"id": 1953, "toc_file_id": 86, "row_number": 9, "day_label": null, "topic": "subQueries", "data": {"Topic": "subQueries"}}
+{"id": 1954, "toc_file_id": 86, "row_number": 10, "day_label": null, "topic": "OOPS", "data": {"Topic": "OOPS"}}
+{"id": 1955, "toc_file_id": 7, "row_number": 7, "day_label": null, "topic": "OOP", "data": {"Topic": "OOP"}}
+{"id": 1956, "toc_file_id": 7, "row_number": 8, "day_label": null, "topic": "Exception Handling", "data": {"Topic": "Exception Handling"}}
+{"id": 1957, "toc_file_id": 87, "row_number": 2, "day_label": null, "topic": "Azure", "data": {"Topic": "Azure"}}
+{"id": 1958, "toc_file_id": 87, "row_number": 3, "day_label": null, "topic": "Copilot", "data": {"Topic": "Copilot"}}
+{"id": 1959, "toc_file_id": 87, "row_number": 4, "day_label": null, "topic": ".Net", "data": {"Topic": ".Net"}}
+{"id": 1960, "toc_file_id": 87, "row_number": 5, "day_label": null, "topic": "AKS", "data": {"Topic": "AKS"}}
+{"id": 1961, "toc_file_id": 87, "row_number": 6, "day_label": null, "topic": ".NET", "data": {"Topic": ".NET"}}
+{"id": 1962, "toc_file_id": 87, "row_number": 7, "day_label": null, "topic": "React", "data": {"Topic": "React"}}
+{"id": 1963, "toc_file_id": 87, "row_number": 8, "day_label": null, "topic": "SQL", "data": {"Topic": "SQL"}}
+{"id": 1964, "toc_file_id": 88, "row_number": 2, "day_label": null, "topic": "Java", "data": {"Topic": "Java"}}
+{"id": 1965, "toc_file_id": 7, "row_number": 9, "day_label": null, "topic": "JS", "data": {"Topic": "JS"}}
+{"id": 1966, "toc_file_id": 7, "row_number": 10, "day_label": null, "topic": "OOPS", "data": {"Topic": "OOPS"}}
+{"id": 1967, "toc_file_id": 89, "row_number": 2, "day_label": null, "topic": "Learning journey, module plan & evaluation model; lab access (GitHub, GitHub Actions, Docker, kind cluster, cloud sandbox, AI coding assistant); introduction to the evolving project — a microservice app + RAG chatbot secured day by day", "data": {"Topic": "Learning journey, module plan & evaluation model; lab access (GitHub, GitHub Actions, Docker, kind cluster, cloud sandbox, AI coding assistant); introduction to the evolving project — a microservice app + RAG chatbot secured day by day"}}
+{"id": 1968, "toc_file_id": 89, "row_number": 3, "day_label": null, "topic": "DevOps → DevSecOps evolution; shift-left & shift-right; shared responsibility across Dev, Sec & Ops; DevSecOps maturity models (OWASP DSOMM); security champions programme; security metrics", "data": {"Topic": "DevOps → DevSecOps evolution; shift-left & shift-right; shared responsibility across Dev, Sec & Ops; DevSecOps maturity models (OWASP DSOMM); security champions programme; security metrics"}}
+{"id": 1969, "toc_file_id": 89, "row_number": 4, "day_label": null, "topic": "Secure SDLC phases & security activities per phase; OWASP Top 10 (latest edition); CWE / CVE / CVSS basics; security requirements & abuse cases", "data": {"Topic": "Secure SDLC phases & security activities per phase; OWASP Top 10 (latest edition); CWE / CVE / CVSS basics; security requirements & abuse cases"}}
+{"id": 1970, "toc_file_id": 89, "row_number": 5, "day_label": null, "topic": "Stages of a secure delivery pipeline (plan → code → build → test → release → deploy → operate); where each security control sits; DevSecOps toolchain landscape (SAST, SCA, DAST, IaC, container, secrets, runtime); walkthrough of the project pipeline used throughout the track", "data": {"Topic": "Stages of a secure delivery pipeline (plan → code → build → test → release → deploy → operate); where each security control sits; DevSecOps toolchain landscape (SAST, SCA, DAST, IaC, container, secrets, runtime); walkthrough of the project pipeline used throughout the track"}}

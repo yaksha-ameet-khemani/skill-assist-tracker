@@ -10,7 +10,7 @@ COLS = ['content_id', 'quality_band', 'confidence', 'low_confidence', 'result', 
 
 
 def d1(where, sql=None, file=None):
-    args = ['npx', 'wrangler', 'd1', 'execute', 'skill-assist-tracker', f'--{where}', '--json']
+    args = ['npx', 'wrangler', 'd1', 'execute', 'skill-assist-tracker', f'--{where}', '--json', '--yes']
     args += ['--command', sql] if sql else [f'--file={file}']
     res = subprocess.run(args, cwd=ROOT / 'cloudflare', capture_output=True, text=True)
     if res.returncode:

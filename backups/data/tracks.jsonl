@@ -2,7 +2,7 @@
 {"id": 2, "client_id": 2, "name": "Data Architect", "notes": null, "extra": {}, "created_at": "2026-10-02T09:00:03.965Z", "csm": "Priyanka"}
 {"id": 3, "client_id": 2, "name": "FSE Architect", "notes": null, "extra": {}, "created_at": "2026-10-02T09:06:33.925Z", "csm": "Priyanka"}
 {"id": 4, "client_id": 2, "name": "Full Stack", "notes": null, "extra": {}, "created_at": "2026-10-02T09:24:53.050Z", "csm": "Priyanka"}
-{"id": 5, "client_id": 2, "name": "SRE", "notes": null, "extra": {}, "created_at": "2026-10-02T09:31:49.143Z", "csm": "Priyanka"}
+{"id": 5, "client_id": 2, "name": "SRE", "notes": null, "extra": {}, "created_at": "2026-10-02T09:31:49.143Z", "csm": "Soma"}
 {"id": 6, "client_id": 7, "name": ".NET", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
 {"id": 7, "client_id": 7, "name": "Azure", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
 {"id": 8, "client_id": 7, "name": "Java 8 to Java 25", "notes": null, "extra": {}, "created_at": "2026-10-02T09:44:51.335Z", "csm": "Ankit Kansara"}
@@ -159,3 +159,16 @@
 {"id": 213, "client_id": 9, "name": "Coding Assessment - 03 Oct 2026", "notes": null, "extra": {"date": "2026-10-03"}, "created_at": "2026-10-05T09:56:41.214Z", "csm": "Anubha"}
 {"id": 245, "client_id": 10, "name": "Data Engineer_L2", "notes": null, "extra": {}, "created_at": "2026-10-05T10:08:07.299Z", "csm": "Internal Request"}
 {"id": 247, "client_id": 26, "name": "Data Analytics with AI", "notes": null, "extra": {}, "created_at": "2026-10-05T10:16:46.074Z", "csm": "Ayman"}
+{"id": 248, "client_id": 9, "name": "Full Stack Java, JavaScript Development & DSA", "notes": null, "extra": {}, "created_at": "2026-10-07T10:02:26.381Z", "csm": "Anubha"}
+{"id": 249, "client_id": 15, "name": "Pod 1", "notes": null, "extra": {}, "created_at": "2026-10-07T13:09:28.081Z", "csm": "Soma"}
+{"id": 250, "client_id": 15, "name": "Pod 2", "notes": null, "extra": {}, "created_at": "2026-10-07T13:10:25.205Z", "csm": "Soma"}
+{"id": 251, "client_id": 40, "name": "T1 to SkillAssist Migration", "notes": null, "extra": {}, "created_at": "2026-10-08T07:13:54.461Z", "csm": "Lishika"}
+{"id": 252, "client_id": 35, "name": "MBA Track Day 17-24", "notes": null, "extra": {}, "created_at": "2026-10-08T11:27:15.365Z", "csm": "Ayman"}
+{"id": 253, "client_id": 2, "name": "FSE_Java_Angular", "notes": null, "extra": {}, "created_at": "2026-10-09T13:49:28.729Z", "csm": "Soma"}
+{"id": 254, "client_id": 2, "name": "FSE_Java_React", "notes": null, "extra": {}, "created_at": "2026-10-09T13:51:10.294Z", "csm": "Soma"}
+{"id": 255, "client_id": 8, "name": "JS Coding Assessment - 12.10.26", "notes": null, "extra": {}, "created_at": "2026-10-12T07:34:50.342Z", "csm": "Anubha"}
+{"id": 256, "client_id": 8, "name": "Python Coding Assessment - 13.10.26", "notes": null, "extra": {}, "created_at": "2026-10-12T07:35:29.621Z", "csm": "Anubha"}
+{"id": 257, "client_id": 8, "name": "ILT training - Python Full Stack Development", "notes": null, "extra": {}, "created_at": "2026-10-12T07:36:42.580Z", "csm": "Anubha"}
+{"id": 258, "client_id": 41, "name": "Demo", "notes": null, "extra": {}, "created_at": "2026-10-12T12:34:52.073Z", "csm": "Kavitha"}
+{"id": 259, "client_id": 2, "name": "Demo for Orientation", "notes": null, "extra": {}, "created_at": "2026-10-12T12:43:45.680Z", "csm": "Soma"}
+{"id": 260, "client_id": 42, "name": "Demo", "notes": null, "extra": {}, "created_at": "2026-10-13T11:08:09.753Z", "csm": "Priyanka"}

@@ -116,6 +116,10 @@ Caveat: one easy "Excellent" item doesn't test skepticism much; compare on a wea
   Myridius 44, EY GDS 34, Straive 31, BCT Banking 24, Randstad 22, Amdocs 21, CIET 20, Sony 20, GoDigit 18,
   Invesco 18 (done), DXC 8, Acuity 7, LTM 7, Godrej 6, Leadyne 6, TCS ION 4, Virtusa 3, CTRLS 2, Wisseninfotech 2.
 
+- Later 2026-10-09: analyzer code committed (8ea6cf4) and pushed by the user; user redeploys. **Invesco scores
+  pushed to the live D1** (verified 17 Excellent, 1 Good). `push_results.py` now passes `--yes` to wrangler (remote
+  `--file` asks for confirmation otherwise) — uncommitted.
+
 ## Open questions for the user
 
 1. Flash main + Lite fallback? (see above)

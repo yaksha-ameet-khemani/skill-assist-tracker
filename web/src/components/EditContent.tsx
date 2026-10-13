@@ -13,9 +13,12 @@ const EXTRA_FIELDS: [key: string, label: string, hint: string][] = [
 
 type ClientRow = { id: number; name: string }
 type TrackRow = { id: number; name: string; csm: string | null }
+type NewTopic = { module: string; topic: string; sub: string }
 type TopicOption = { id: number; topic: string | null; day_label: string | null; sheet_name: string; file_name: string; module: string; text: string }
 type Links = { doc?: string; doc_kind?: string; solution?: string; manual?: boolean; [k: string]: unknown }
 
+// Header of the sub-topics column in typed topic lists (matches SUBTOPIC_KEY, so the home page shows it under the topic).
+const SUB_HEADER = 'Sub-topics'
 const str = (v: unknown) => (typeof v === 'string' ? v : '')
 const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase()
 
@@ -78,9 +81,10 @@ export function EditContent({
   const [hasWeek, setHasWeek] = useState(!!str(x.week))
   const [linked, setLinked] = useState<number[]>(content?.topics.map((t) => t.toc_row_id) ?? [])
   const [find, setFind] = useState('')
-  const [newTopic, setNewTopic] = useState('')
+  // A typed topic, laid out like the TOC sheets: module above it, sub-topics under it (both optional).
+  const [newTopic, setNewTopic] = useState({ module: '', topic: '', sub: '' })
   // Typed topics wait here until Save (so Cancel leaves nothing behind).
-  const [pending, setPending] = useState<string[]>([])
+  const [pending, setPending] = useState<NewTopic[]>([])
   const [allFields, setAllFields] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -242,9 +246,9 @@ export function EditContent({
   /** Typed topics go into the client's hand-written topic list ("(Added manually)", created if missing) on Save. */
   const createPending = async (client: ClientRow): Promise<number[]> => {
     if (!pending.length) return []
-    type F = { id: number; sheet_name: string }
+    type F = { id: number; sheet_name: string; columns: { letter: string; header: string }[] | string }
     const files: F[] = must(
-      await supabase.from('toc_files').select('id,sheet_name').eq('client_id', client.id).eq('file_name', '(Added manually)').order('id'),
+      await supabase.from('toc_files').select('id,sheet_name,columns').eq('client_id', client.id).eq('file_name', '(Added manually)').order('id'),
     )
     const file: F =
       files[0] ??
@@ -256,13 +260,25 @@ export function EditContent({
             file_name: '(Added manually)',
             sheet_name: `${client.name} topics`,
             header_row: 1,
-            columns: [{ letter: 'A', header: 'Topic' }],
-            topic_column: 'A',
+            columns: [
+              { letter: 'A', header: 'Module' },
+              { letter: 'B', header: 'Topic' },
+              { letter: 'C', header: 'Sub-topics' },
+            ],
+            topic_column: 'B',
             notes: 'Topics typed in the portal (no TOC file).',
           })
-          .select('id,sheet_name')
+          .select('id,sheet_name,columns')
           .single(),
       )
+    // Older lists only had a Topic column: add Module / Sub-topics columns when they are first used.
+    const cols = typeof file.columns === 'string' ? JSON.parse(file.columns) : file.columns
+    const want = [pending.some((p) => p.module) && 'Module', pending.some((p) => p.sub) && SUB_HEADER].filter(Boolean) as string[]
+    const missing = want.filter((h) => !cols.some((c: { header: string }) => c.header === h))
+    if (missing.length) {
+      const more = missing.map((header, i) => ({ letter: String.fromCharCode(65 + cols.length + i), header }))
+      must(await supabase.from('toc_files').update({ columns: [...cols, ...more] }).eq('id', file.id).select('id'))
+    }
     const last = must(
       await supabase.from('toc_rows').select('row_number').eq('toc_file_id', file.id).order('row_number', { ascending: false }).limit(1),
     )
@@ -270,16 +286,30 @@ export function EditContent({
     const made: { id: number }[] = must(
       await supabase
         .from('toc_rows')
-        .insert(pending.map((topic) => ({ toc_file_id: file.id, row_number: ++n, topic, data: { Topic: topic } })))
+        .insert(
+          pending.map((p) => ({
+            toc_file_id: file.id,
+            row_number: ++n,
+            topic: p.topic,
+            data: { ...(p.module && { Module: p.module }), Topic: p.topic, ...(p.sub && { [SUB_HEADER]: p.sub }) },
+          })),
+        )
         .select('id'),
     )
     return made.map((m) => m.id)
   }
 
   const addNewTopic = () => {
-    const topic = newTopic.trim()
-    if (topic && !pending.includes(topic)) setPending((p) => [...p, topic])
-    setNewTopic('')
+    const topic = newTopic.topic.trim()
+    // Sub-topics typed with commas or one per line are stored as a " · " list (shown as bullets on the home page).
+    const sub = newTopic.sub
+      .split(/[,\n]/)
+      .map((v) => v.trim())
+      .filter(Boolean)
+      .join(' · ')
+    const t = { module: newTopic.module.trim(), topic, sub }
+    if (topic && !pending.some((p) => p.topic === topic && p.module === t.module)) setPending((p) => [...p, t])
+    setNewTopic({ module: '', topic: '', sub: '' })
   }
 
   const remove = async () => {
@@ -395,8 +425,8 @@ export function EditContent({
           {linked.length + pending.length > 0 && (
             <div className="chips">
               {pending.map((p) => (
-                <span className="chip" key={`new-${p}`} title="New topic, created when you save">
-                  {p} <span className="muted small">(new)</span>{' '}
+                <span className="chip" key={`new-${p.module}-${p.topic}`} title={p.sub ? `Sub-topics: ${p.sub}` : 'New topic, created when you save'}>
+                  {[p.topic, p.module && `(${p.module})`].filter(Boolean).join(' · ')} <span className="muted small">(new)</span>{' '}
                   <button className="chip-x" title="Remove this topic" onClick={() => setPending((l) => l.filter((v) => v !== p))}>
                     ×
                   </button>
@@ -442,15 +472,30 @@ export function EditContent({
             </ul>
           )}
           {find && !matches.length && options.length > 0 && <p className="muted small">No matching topic for this client.</p>}
+          <p className="muted small" style={{ margin: 0 }}>…or type a new topic (no TOC needed):</p>
           <div className="form-row">
             <input
+              placeholder="Module (optional)"
+              value={newTopic.module}
+              onChange={(e) => setNewTopic((t) => ({ ...t, module: e.target.value }))}
+            />
+            <input
               className="grow"
-              placeholder="…or type a new topic (no TOC needed)"
-              value={newTopic}
-              onChange={(e) => setNewTopic(e.target.value)}
+              placeholder="Topic"
+              value={newTopic.topic}
+              onChange={(e) => setNewTopic((t) => ({ ...t, topic: e.target.value }))}
               onKeyDown={(e) => e.key === 'Enter' && addNewTopic()}
             />
-            <button className="small" disabled={!newTopic.trim()} onClick={addNewTopic}>
+          </div>
+          <div className="form-row">
+            <textarea
+              className="grow"
+              rows={2}
+              placeholder="Sub-topics (optional): separate with commas or put one per line"
+              value={newTopic.sub}
+              onChange={(e) => setNewTopic((t) => ({ ...t, sub: e.target.value }))}
+            />
+            <button className="small" disabled={!newTopic.topic.trim()} onClick={addNewTopic}>
               Add new topic
             </button>
           </div>
