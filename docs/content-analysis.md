@@ -120,6 +120,18 @@ Caveat: one easy "Excellent" item doesn't test skepticism much; compare on a wea
   pushed to the live D1** (verified 17 Excellent, 1 Good). `push_results.py` now passes `--yes` to wrangler (remote
   `--file` asks for confirmation otherwise) — uncommitted.
 
+## Status 2026-10-13
+
+- **DXC finished and live**: 198, 195, 196, 199 Excellent; 186, 191, 194 Good; **189 (Azure Bicep) Fair**. Solutions are
+  all correct; the lower grades are packaging: 189 bundles two tasks with two rubrics that both say "save as
+  solution.txt"; 186 / 191 bundle 3 exercises under one title; 194 is a basic-level task. Pushed to the live D1 by the user.
+- **Acuity 3 of 7**: 581 Fair, 585 Fair (no rubric); **582 Poor** (solution crashes for N=1, never returns -1).
+  586 stopped on the daily limit (both Flash models). Next: `run_next.py Acuity` after 12:30 PM IST (586, then 3 to fetch).
+- Live had moved ahead (3 new clients TCL / Ascend / ITC Infotech, 1,256 items): live backed up to `backups/data` and the
+  local copy refreshed from it (analysis rows kept). Committed 618cd03 with the Module / Sub-topics boxes for typed
+  topics (Edit content), deployed and checked live.
+- Live now has scores for Invesco (18) and DXC (8). Local Worker and web server stopped.
+
 ## Open questions for the user
 
 1. Flash main + Lite fallback? (see above)

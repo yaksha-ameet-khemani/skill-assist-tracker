@@ -534,7 +534,12 @@ export function Tracker() {
           onSaved={async (id, keepOpen) => {
             // Re-read the saved row (track, CSM and topics come from the view); a new item is added to the list.
             const fresh = must(await supabase.from('v_contents').select('*').eq('id', id).single()) as ContentRow
-            setRows((all) => all && sortRows(all.some((x) => x.id === id) ? all.map((x) => (x.id === id ? fresh : x)) : [...all, fresh]))
+            // Other items sharing one of its topics too: a typed topic may have been changed.
+            const ids = new Set(fresh.topics.map((t) => t.toc_row_id))
+            const others = (rows ?? []).filter((x) => x.id !== id && x.topics.some((t) => ids.has(t.toc_row_id))).map((x) => x.id)
+            const more: ContentRow[] = others.length ? must(await supabase.from('v_contents').select('*').in('id', others)) : []
+            const byId = new Map([fresh, ...more].map((x) => [x.id, x]))
+            setRows((all) => all && sortRows(all.some((x) => x.id === id) ? all.map((x) => byId.get(x.id) ?? x) : [...all, fresh]))
             if (!keepOpen) setEditing(null)
           }}
           onDeleted={(id) => {
