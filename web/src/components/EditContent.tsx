@@ -233,11 +233,12 @@ export function EditContent({
         ? (must(await supabase.from('contents').update(fields).eq('id', content.id).select('id')), content.id)
         : must(await supabase.from('contents').insert({ ...fields, client_id: client.id }).select('id').single()).id
 
-      await saveEdits(allEdits)
+      const swap = await saveEdits(allEdits, client, id)
+      const now = linked.map((t) => swap.get(t) ?? t)
       // Topics: add / remove links as ticked.
       const before = new Set(content?.topics.map((t) => t.toc_row_id) ?? [])
-      const add = [...linked.filter((t) => !before.has(t)), ...(await createPending(client, newTopics))]
-      const remove = [...before].filter((t) => !linked.includes(t))
+      const add = [...now.filter((t) => !before.has(t)), ...(await createPending(client, newTopics))]
+      const remove = [...before].filter((t) => !now.includes(t))
       if (add.length)
         must(await supabase.from('content_toc_links').insert(add.map((toc_row_id) => ({ content_id: id, toc_row_id }))).select('content_id'))
       if (remove.length) must(await supabase.from('content_toc_links').delete().eq('content_id', id).in('toc_row_id', remove).select('content_id'))
@@ -342,19 +343,29 @@ export function EditContent({
     }
   }
 
-  /** Writes changed typed topics (module / topic / sub-topics) back into the client's hand-written topic list. */
-  const saveEdits = async (list: Map<number, NewTopic>) => {
+  /** Writes changed typed topics (module / topic / sub-topics) back into the client's hand-written topic list. A topic
+   *  other items are linked to is left as it is: this item gets its own changed copy instead. Returns old → copy ids. */
+  const saveEdits = async (list: Map<number, NewTopic>, client: ClientRow, contentId: number): Promise<Map<number, number>> => {
+    const swap = new Map<number, number>()
     for (const [id, t] of list) {
       const o = byId.get(id)
       if (!o) continue
       const was = asTyped(o, false)
       if (was.module === t.module && was.topic === t.topic && was.sub === t.sub) continue
+      const others = must(
+        await supabase.from('content_toc_links').select('content_id').eq('toc_row_id', id).neq('content_id', contentId).limit(1),
+      )
+      if (others.length) {
+        swap.set(id, (await createPending(client, [t]))[0])
+        continue
+      }
       const file = must(await supabase.from('toc_files').select('id,columns').eq('id', o.toc_file_id).single())
       await addColumns(file, [t])
       const { Module: _m, [SUB_HEADER]: _s, ...rest } = o.data ?? {}
       const data = { ...(t.module && { Module: t.module }), ...rest, Topic: t.topic, ...(t.sub && { [SUB_HEADER]: t.sub }) }
       must(await supabase.from('toc_rows').update({ topic: t.topic, data }).eq('id', id).select('id'))
     }
+    return swap
   }
 
   /** A typed topic as module / topic / sub-topics; with `edited`, its unsaved changes. */
@@ -562,7 +573,7 @@ export function EditContent({
           {find && !matches.length && options.length > 0 && <p className="muted small">No matching topic for this client.</p>}
           <p className="muted small" style={{ margin: 0 }}>
             {editingId != null
-              ? 'Changing a topic (this changes it for every item linked to it):'
+              ? 'Changing a topic (only for this item; other items linked to it keep it as it was):'
               : '…or type a new topic (no TOC needed):'}
           </p>
           <div className="form-row">
